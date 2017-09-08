@@ -12,14 +12,21 @@ import android.widget.*;
 import java.util.*;
 import android.view.*;
 import android.content.*;
-
 import butterknife.BindView;
+import java.util.regex.*;
+import java.io.*;
+import java.net.*;
+import org.json.*;
+
+import java.util.List;
+import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity {
 //public class MainActivity extends ListActivity {
     private List<Map<String, Object>> mData;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mData = getData();
         setContentView(R.layout.activity_main);
@@ -32,30 +39,74 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Click item" + i, Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
+    List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
     private List<Map<String, Object>> getData() {
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("title", "G1");
-        map.put("info", "google 1");
-        map.put("img", R.drawable.i1);
-        list.add(map);
+        Thread thread = new Thread(){
+            public void run(){
 
-        map = new HashMap<String, Object>();
-        map.put("title", "G2");
-        map.put("info", "google 2");
-        map.put("img", R.drawable.i1);
-        list.add(map);
+                Map<String, Object> map = new HashMap<String, Object>();
+                try {
+                    URL cs = null;
+                    try {
+                        cs = new URL("http://166.111.68.66:2042/news/action/query/latest");
+                    } catch (MalformedURLException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    BufferedReader in = new BufferedReader(new InputStreamReader(cs.openStream()));
+                    String inputLine;
+                    inputLine = in.readLine();
+                    System.out.println(inputLine);
+                    JSONObject jsonobj = new JSONObject(inputLine);
+                    JSONArray jsonarray = jsonobj.getJSONArray("list");
 
-        map = new HashMap<String, Object>();
-        map.put("title", "G3");
-        map.put("info", "google 3");
-        map.put("img", R.drawable.i1);
-        list.add(map);
 
+                    for(int i=0;i<jsonarray.length();i++){
+                        String newsClassTag = jsonarray.getJSONObject(i).getString("newsClassTag");
+                        String news_ID = jsonarray.getJSONObject(i).getString("news_ID");
+                        String news_Title = jsonarray.getJSONObject(i).getString("news_Title");
+                        String news_Intro = jsonarray.getJSONObject(i).getString("news_Intro");
+
+                        map = new HashMap<String, Object>();
+                        map.put("title",news_Title);
+                        map.put("info", news_Intro);
+                        map.put("img", R.drawable.i1);
+                        list.add(map);
+                    }
+                }catch (Exception e) {
+                    StackTraceElement[] st = e.getStackTrace();
+                    String tmp = e.getClass().getName();
+                    map = new HashMap<String, Object>();
+                    map.put("title",
+                            tmp);
+                    map.put("info", e.getMessage());
+                    map.put("img", R.drawable.i1);
+                    list.add(map);
+                    for (StackTraceElement stackTraceElement : st) {
+                        String sOut = "";
+                        String exclass = stackTraceElement.getClassName();
+                        String method = stackTraceElement.getMethodName();
+                        System.out.println(exclass);
+                        System.out.println(method);
+                        sOut += "\tat " + stackTraceElement + "\r\n";
+
+                        map = new HashMap<String, Object>();
+                        map.put("title",sOut);
+                        map.put("info", method);
+                        map.put("img", R.drawable.i1);
+                        list.add(map);
+                    }
+
+                }
+
+            }
+        };
+
+
+        thread.start();
         return list;
     }
 
