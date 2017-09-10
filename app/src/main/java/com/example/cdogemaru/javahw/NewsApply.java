@@ -5,7 +5,8 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 import org.json.*;
-public class Kernel {
+
+public class NewsApply {
     List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
     public List<Map<String, Object>> getData() {
 
@@ -89,25 +90,6 @@ public class Kernel {
         Bundle map = new Bundle();
         map.putString("title", "G" + (id));
         map.putString("content", "google" + (id));
-        return map;
-    }
-}
-
-class News {
-    public Map<String, Object> map;
-    News(String title, String content, Integer id, Integer read) {
-        map = new HashMap<String, Object>();
-        map.put("title", title);
-        map.put("content", content);
-        map.put("id", id.toString());
-        map.put("read", read.toString());
-    }
-
-    String get(String token) {
-        return (String)map.get(token);
-    }
-
-    Map<String, Object> getAll() {
         return map;
     }
 }
