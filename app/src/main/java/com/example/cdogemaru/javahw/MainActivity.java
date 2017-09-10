@@ -1,6 +1,7 @@
 package com.example.cdogemaru.javahw;
 
 import android.app.ListActivity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,8 +32,9 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     //private List<Map<String, Object>> mData;
     private int requestcode = 1500;
+    int pageno = 1;
     private MyAdapter adapter;
-    private Kernel kernel;
+    private NewsApply kernel;
     PullToRefreshListView newsview;
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -41,19 +43,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         newsview = (PullToRefreshListView) findViewById(R.id.newsview);
         adapter = new MyAdapter(this);
-        kernel = new Kernel();
+        kernel = new NewsApply();
 
         //TODO LOAD THE DATA
 
-        kernel.getData();
-
-
+        kernel.getData(pageno);
         newsview.setAdapter(adapter);
+
         newsview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(MainActivity.this, ContentActivity.class);
-                Bundle map = kernel.getNewsById(i);
+                Bundle map = kernel.getNewsById(i-1);
                 intent.putExtras(map);
                 startActivityForResult(intent, requestcode);
             }
@@ -73,7 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
                 //TODO: REFRESH THE DATA
 
+                kernel.getData(++pageno);
+
                 adapter.notifyDataSetChanged();
+                newsview.getRefreshableView().setSelection(pageno*20 - 20);
                 newsview.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -109,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         public TextView title;
         public TextView info;
     }
+
     public class MyAdapter extends BaseAdapter{
         private LayoutInflater mInflater;
 
@@ -119,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return kernel.list.size();
+            return kernel.newslist.size();
         }
 
         @Override
@@ -147,9 +152,10 @@ public class MainActivity extends AppCompatActivity {
             }else {
                 holder = (ViewHolder)convertView.getTag();
             }
-            holder.img.setBackgroundResource((Integer)kernel.list.get(position).get("img"));
-            holder.title.setText((String)kernel.list.get(position).get("title"));
-            holder.info.setText((String)kernel.list.get(position).get("info"));
+            //holder.img.setImageBitmap((Bitmap)kernel.newslist.get(position).get("img"));
+            holder.img.setBackgroundResource(0);
+            holder.title.setText((String)kernel.newslist.get(position).get("title"));
+            holder.info.setText((String)kernel.newslist.get(position).get("info"));
             return convertView;
         }
 
