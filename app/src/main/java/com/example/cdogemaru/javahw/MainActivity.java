@@ -12,125 +12,94 @@ import android.widget.*;
 import java.util.*;
 import android.view.*;
 import android.content.*;
+
+import com.handmark.pulltorefresh.library.ILoadingLayout;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.yalantis.phoenix.PullToRefreshView;
+
 import butterknife.BindView;
 import java.util.regex.*;
 import java.io.*;
 import java.net.*;
 import org.json.*;
-
 import java.util.List;
 import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-//public class MainActivity extends ListActivity {
-    private List<Map<String, Object>> mData;
+    //private List<Map<String, Object>> mData;
+    private int requestcode = 1500;
+    private MyAdapter adapter;
+    private Kernel kernel;
+    PullToRefreshListView newsview;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        mData = getData();
+        //mData = kernel.getData();
         setContentView(R.layout.activity_main);
-        ListView newsview = (ListView)findViewById(R.id.newsview);
-        MyAdapter adapter = new MyAdapter(this);
+        newsview = (PullToRefreshListView) findViewById(R.id.newsview);
+        adapter = new MyAdapter(this);
+        kernel = new Kernel();
+
+        //TODO LOAD THE DATA
+
+        kernel.getData();
+
+
         newsview.setAdapter(adapter);
         newsview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainActivity.this, "Click item" + i, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, ContentActivity.class);
+                Bundle map = kernel.getNewsById(i);
+                intent.putExtras(map);
+                startActivityForResult(intent, requestcode);
+            }
+        });
+
+        newsview.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+        ILoadingLayout endLayout = newsview.getLoadingLayoutProxy(false,true);
+        endLayout.setPullLabel("上拉刷新");
+        endLayout.setRefreshingLabel("加载中");
+        endLayout.setReleaseLabel("放开刷新");
+
+        newsview.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {}
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+
+                //TODO: REFRESH THE DATA
+
+                adapter.notifyDataSetChanged();
+                newsview.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        newsview.onRefreshComplete();
+                    }
+                }, 200);
             }
         });
     }
 
-    List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-    private List<Map<String, Object>> getData() {
-
-        Thread thread = new Thread(){
-            public void run(){
-
-                Map<String, Object> map = new HashMap<String, Object>();
-                try {
-                    URL cs = null;
-                    try {
-                        cs = new URL("http://166.111.68.66:2042/news/action/query/latest");
-                    } catch (MalformedURLException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-                    BufferedReader in = new BufferedReader(new InputStreamReader(cs.openStream()));
-                    String inputLine;
-                    inputLine = in.readLine();
-                    System.out.println(inputLine);
-                    JSONObject jsonobj = new JSONObject(inputLine);
-                    JSONArray jsonarray = jsonobj.getJSONArray("list");
-
-
-                    for(int i=0;i<jsonarray.length();i++){
-                        String newsClassTag = jsonarray.getJSONObject(i).getString("newsClassTag");
-                        String news_ID = jsonarray.getJSONObject(i).getString("news_ID");
-                        String news_Title = jsonarray.getJSONObject(i).getString("news_Title");
-                        String news_Intro = jsonarray.getJSONObject(i).getString("news_Intro");
-
-                        map = new HashMap<String, Object>();
-                        map.put("title",news_Title);
-                        map.put("info", news_Intro);
-                        map.put("img", R.drawable.i1);
-                        list.add(map);
-                    }
-                }catch (Exception e) {
-                    StackTraceElement[] st = e.getStackTrace();
-                    String tmp = e.getClass().getName();
-                    map = new HashMap<String, Object>();
-                    map.put("title",
-                            tmp);
-                    map.put("info", e.getMessage());
-                    map.put("img", R.drawable.i1);
-                    list.add(map);
-                    for (StackTraceElement stackTraceElement : st) {
-                        String sOut = "";
-                        String exclass = stackTraceElement.getClassName();
-                        String method = stackTraceElement.getMethodName();
-                        System.out.println(exclass);
-                        System.out.println(method);
-                        sOut += "\tat " + stackTraceElement + "\r\n";
-
-                        map = new HashMap<String, Object>();
-                        map.put("title",sOut);
-                        map.put("info", method);
-                        map.put("img", R.drawable.i1);
-                        list.add(map);
-                    }
-
-                }
-
-            }
-        };
-
-
-        thread.start();
-        return list;
-    }
-
-    // ListView 中某项被选中后的逻辑
-//    @Override
-//    protected void onListItemClick(ListView l, View v, int position, long id) {
-//
-//        Log.v("MyListView4-click", (String)mData.get(position).get("title"));
-//    }
-
     /**
-     * listview中点击按键弹出对话框
+     * 接收当前Activity跳转后，目标Activity关闭后的回传值
      */
-    public void showInfo(){
-        new AlertDialog.Builder(this)
-                .setTitle("我的listview")
-                .setMessage("介绍...")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .show();
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        switch(resultCode){
+//            case RESULT_OK:{//接收并显示Activity传过来的值
+//                Bundle bundle = data.getExtras();
+//                String rs = bundle.getString("rs");
+//                tv_main_result.setText(rs);
+//                break;
+//            }
+//            default:
+//                break;
+//        }
     }
 
 
@@ -139,22 +108,18 @@ public class MainActivity extends AppCompatActivity {
         public ImageView img;
         public TextView title;
         public TextView info;
-        //public Button viewBtn;
     }
-
-
     public class MyAdapter extends BaseAdapter{
-
         private LayoutInflater mInflater;
-
 
         public MyAdapter(Context context){
             this.mInflater = LayoutInflater.from(context);
         }
+
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return mData.size();
+            return kernel.list.size();
         }
 
         @Override
@@ -171,38 +136,20 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
             ViewHolder holder = null;
             if (convertView == null) {
-
                 holder=new ViewHolder();
-
                 convertView = mInflater.inflate(R.layout.newsitem, null);
                 holder.img = (ImageView)convertView.findViewById(R.id.img);
                 holder.title = (TextView)convertView.findViewById(R.id.title);
                 holder.info = (TextView)convertView.findViewById(R.id.info);
-                //holder.viewBtn = (Button)convertView.findViewById(R.id.view_btn);
                 convertView.setTag(holder);
-
             }else {
-
                 holder = (ViewHolder)convertView.getTag();
             }
-
-
-            holder.img.setBackgroundResource((Integer)mData.get(position).get("img"));
-            holder.title.setText((String)mData.get(position).get("title"));
-            holder.info.setText((String)mData.get(position).get("info"));
-
-            //holder.viewBtn.setOnClickListener(new View.OnClickListener() {
-
-//                @Override
-//                public void onClick(View v) {
-//                    showInfo();
-//                }
-//            });
-
-
+            holder.img.setBackgroundResource((Integer)kernel.list.get(position).get("img"));
+            holder.title.setText((String)kernel.list.get(position).get("title"));
+            holder.info.setText((String)kernel.list.get(position).get("info"));
             return convertView;
         }
 
