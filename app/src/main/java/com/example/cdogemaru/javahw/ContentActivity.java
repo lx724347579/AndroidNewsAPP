@@ -31,6 +31,7 @@ import static java.io.FileDescriptor.in;
 public class ContentActivity extends AppCompatActivity {
     private SpeechSynthesizer mTts;
     private SynthesizerListener mLst;
+    boolean isTtsPlaying = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +43,11 @@ public class ContentActivity extends AppCompatActivity {
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(intent.getStringExtra("title"));
 
-        mTts = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
-        if (mTts != null) {
-            mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyun");
-            mTts.setParameter(SpeechConstant.PITCH, "50");
-        }
 
+        mTts = SpeechSynthesizer.createSynthesizer(ContentActivity.this, mTtsInitListener);
+        mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan");
+        mTts.setParameter(SpeechConstant.PITCH, "50");
+        mTts.setParameter(SpeechConstant.VOLUME, "80");
         Button button;
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +55,27 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (mTts != null)
                 {
-                    mTts.startSpeaking("起爷起爷起", mTtsListener);
+                    if (!isTtsPlaying) {
+                        String text = "起爷起爷起";
+                        int code = mTts.startSpeaking(text, mTtsListener);
+                        Toast.makeText(ContentActivity.this,
+                                String.valueOf(code), Toast.LENGTH_SHORT).show();
+                        if (code != ErrorCode.SUCCESS) {
+                            Toast.makeText(ContentActivity.this,
+                                    "failed" + code,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            isTtsPlaying = true;
+                            Toast.makeText(ContentActivity.this,
+                                    "reading", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        isTtsPlaying = false;
+                        mTts.stopSpeaking();
+                    }
+                }else {
+                    Toast.makeText(ContentActivity.this,
+                            "init failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -111,6 +131,16 @@ public class ContentActivity extends AppCompatActivity {
 
         @Override
         public void onCompleted(SpeechError error) {
+            isTtsPlaying = false;
+            if (error == null) {
+                Log.d("tts", "播放完成");
+                Toast.makeText(ContentActivity.this,
+                        "read completed", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d("tts", error.getPlainDescription(true));
+                Toast.makeText(ContentActivity.this,
+                        error.getPlainDescription(true), Toast.LENGTH_SHORT).show();
+            }
         }
 
         @Override

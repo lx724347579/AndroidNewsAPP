@@ -18,6 +18,8 @@ import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SpeechUtility;
 import com.yalantis.phoenix.PullToRefreshView;
 
@@ -43,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //mData = kernel.getData();
         setContentView(R.layout.activity_main);
-        SpeechUtility.createUtility(this, "appid=59b678fe");
         newsview = (PullToRefreshListView) findViewById(R.id.newsview);
         adapter = new MyAdapter(this);
         kernel = new NewsApply();
         imgapply = new ImgApply();
+        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=59a78bf9");
         //TODO LOAD THE DATA
 
         kernel.getData(pageno);
