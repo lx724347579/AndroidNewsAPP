@@ -18,6 +18,7 @@ import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.iflytek.cloud.SpeechUtility;
 import com.yalantis.phoenix.PullToRefreshView;
 
 import butterknife.BindView;
@@ -36,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
     private MyAdapter adapter;
     private NewsApply kernel;
     private ImgApply imgapply;
-
     PullToRefreshListView newsview;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         //mData = kernel.getData();
         setContentView(R.layout.activity_main);
+        SpeechUtility.createUtility(this, "appid=59b678fe");
         newsview = (PullToRefreshListView) findViewById(R.id.newsview);
         adapter = new MyAdapter(this);
         kernel = new NewsApply();

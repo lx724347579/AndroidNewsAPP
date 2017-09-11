@@ -8,9 +8,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechSynthesizer;
+import com.iflytek.cloud.SpeechUtility;
+import com.iflytek.cloud.SynthesizerListener;
 
 import org.w3c.dom.Text;
 
@@ -19,7 +29,8 @@ import java.io.LineNumberReader;
 import static java.io.FileDescriptor.in;
 
 public class ContentActivity extends AppCompatActivity {
-
+    private SpeechSynthesizer mTts;
+    private SynthesizerListener mLst;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +42,23 @@ public class ContentActivity extends AppCompatActivity {
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(intent.getStringExtra("title"));
 
+        mTts = SpeechSynthesizer.createSynthesizer(this, mTtsInitListener);
+        if (mTts != null) {
+            mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyun");
+            mTts.setParameter(SpeechConstant.PITCH, "50");
+        }
+
+        Button button;
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mTts != null)
+                {
+                    mTts.startSpeaking("起爷起爷起", mTtsListener);
+                }
+            }
+        });
         //TODO ALSO NEED TO SET LISTENER FOR "BACK"
 
 //        btn_rs_skip = (Button)findViewById(R.id.btn_rs_skip);
@@ -53,5 +81,51 @@ public class ContentActivity extends AppCompatActivity {
 //        });
 
     }
+
+    private SynthesizerListener mTtsListener = new SynthesizerListener() {
+
+        @Override
+        public void onSpeakBegin() {
+            Log.d("tts", "开始播放");
+        }
+
+        @Override
+        public void onSpeakPaused() {
+            Log.d("tts", "暂停播放");
+        }
+
+        @Override
+        public void onSpeakResumed() {
+            Log.d("tts", "继续播放");
+        }
+
+        @Override
+        public void onBufferProgress(int percent, int beginPos, int endPos, String info) {
+            // 合成进度
+        }
+
+        @Override
+        public void onSpeakProgress(int percent, int beginPos, int endPos) {
+            // 播放进度
+        }
+
+        @Override
+        public void onCompleted(SpeechError error) {
+        }
+
+        @Override
+        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+
+        }
+    };
+    private InitListener mTtsInitListener = new InitListener() {
+        @Override
+        public void onInit(int code) {
+            Log.d("tts", "InitListener init() code = " + code);
+            if (code != ErrorCode.SUCCESS) {
+                Log.d("tts", "初始化失败，错误码：" + code);
+            }
+        }
+    };
 
 }
