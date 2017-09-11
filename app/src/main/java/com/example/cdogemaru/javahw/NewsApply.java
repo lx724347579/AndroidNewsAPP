@@ -1,6 +1,7 @@
 package com.example.cdogemaru.javahw;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 
 import java.util.*;
@@ -10,22 +11,10 @@ import org.json.*;
 
 public class NewsApply {
     List<Map<String, Object>> newslist = new ArrayList<Map<String, Object>>();
-
-    public static Bitmap getBitmap(String path) throws IOException{
-
-        URL url = new URL(path);
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-        conn.setConnectTimeout(5000);
-        conn.setRequestMethod("GET");
-        if(conn.getResponseCode() == 200){
-            InputStream inputStream = conn.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            return bitmap;
-        }
-        return null;
-    }
+    boolean finished;
 
     public void getData(int page) {
+        finished = false;
         String target_url = "http://166.111.68.66:2042/news/action/query/latest?pageNo=";
         target_url += String.valueOf(page);
         final String finalTarget_url = target_url;
@@ -60,15 +49,17 @@ public class NewsApply {
                         map = new HashMap<String, Object>();
                         map.put("title", tmpnews.Title);
                         map.put("info", tmpnews.Intro);
+                        if(tmpnews.Pictures.contains(";"))
+                            map.put("img", tmpnews.Pictures.split(";")[0]);
+                        map.put("img", tmpnews.Pictures);
 
-                        map.put("img","11");
-                        //map.put("img", getBitmap(tmpnews.Pictures));
+                        //map.put("img","11");
                         newslist.add(map);
                     }
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                 }
-
+                finished = true;
            }
        };
 

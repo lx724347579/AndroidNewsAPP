@@ -11,5 +11,6 @@
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/newsview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
+
 </android.support.constraint.ConstraintLayout>

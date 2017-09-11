@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     int pageno = 1;
     private MyAdapter adapter;
     private NewsApply kernel;
+    private ImgApply imgapply;
+
     PullToRefreshListView newsview;
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -44,11 +46,17 @@ public class MainActivity extends AppCompatActivity {
         newsview = (PullToRefreshListView) findViewById(R.id.newsview);
         adapter = new MyAdapter(this);
         kernel = new NewsApply();
-
+        imgapply = new ImgApply();
         //TODO LOAD THE DATA
 
         kernel.getData(pageno);
+        while(true) {
+            if(kernel.finished)
+                break;
+        }
+
         newsview.setAdapter(adapter);
+
 
         newsview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -76,11 +84,12 @@ public class MainActivity extends AppCompatActivity {
 
                 kernel.getData(++pageno);
 
-                adapter.notifyDataSetChanged();
-                newsview.getRefreshableView().setSelection(pageno*20 - 20);
+
+                //newsview.getRefreshableView().setSelection(pageno*20 - 20);
                 newsview.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        adapter.notifyDataSetChanged();
                         newsview.onRefreshComplete();
                     }
                 }, 200);
@@ -153,7 +162,15 @@ public class MainActivity extends AppCompatActivity {
                 holder = (ViewHolder)convertView.getTag();
             }
             //holder.img.setImageBitmap((Bitmap)kernel.newslist.get(position).get("img"));
-            holder.img.setBackgroundResource(0);
+
+
+            //holder.img.setImageResource(R.drawable.timg);
+            String imgurl = (String)kernel.newslist.get(position).get("img");
+            if(imgurl.isEmpty())
+                holder.img.setImageResource(R.drawable.timg);
+            else
+                imgapply.showImageAsyn(holder.img,imgurl,R.drawable.timg);
+
             holder.title.setText((String)kernel.newslist.get(position).get("title"));
             holder.info.setText((String)kernel.newslist.get(position).get("info"));
             return convertView;
