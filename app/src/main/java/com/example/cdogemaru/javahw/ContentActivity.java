@@ -10,13 +10,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-<<<<<<< HEAD
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-=======
 import android.widget.Button;
->>>>>>> 9fd3b76f98b89367b76a55a63989b0063fae9917
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,17 +35,17 @@ import java.util.ArrayList;
 import static java.io.FileDescriptor.in;
 
 public class ContentActivity extends AppCompatActivity {
-<<<<<<< HEAD
+
     private ListView listview;
     private ImgApply imgapply;
 
     private ArrayList<String>imagelist  = new ArrayList<String>();
     private String title, text;
-=======
+
     private SpeechSynthesizer mTts;
     private SynthesizerListener mLst;
     boolean isTtsPlaying = false;
->>>>>>> 9fd3b76f98b89367b76a55a63989b0063fae9917
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +57,7 @@ public class ContentActivity extends AppCompatActivity {
         imgapply = new ImgApply();
         imgapply.Resize = false;
         Intent intent = getIntent();
-<<<<<<< HEAD
+
         GetNewsContent apply = new GetNewsContent();
         apply.getData("http://166.111.68.66:2042/news/action/query/detail?newsId=" + intent.getStringExtra("id"));
         while (true) {
@@ -84,7 +81,44 @@ public class ContentActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.newslayout);
         MyAdapter adapter = new MyAdapter(this);
         listview.setAdapter(adapter);
+
+        mTts = SpeechSynthesizer.createSynthesizer(ContentActivity.this, mTtsInitListener);
+        mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan");
+        mTts.setParameter(SpeechConstant.PITCH, "50");
+        mTts.setParameter(SpeechConstant.VOLUME, "80");
+        Button button;
+        button = (Button) findViewById(R.id.button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mTts != null)
+                {
+                    if (!isTtsPlaying) {
+                        String readtext = text;
+                        int code = mTts.startSpeaking(readtext, mTtsListener);
+                        if (code != ErrorCode.SUCCESS) {
+                            Toast.makeText(ContentActivity.this,
+                                    "failed" + code,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            isTtsPlaying = true;
+                            Toast.makeText(ContentActivity.this,
+                                    "reading", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        isTtsPlaying = false;
+                        mTts.stopSpeaking();
+                    }
+                }else {
+                    Toast.makeText(ContentActivity.this,
+                            "init failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
+
 
     public final class ViewHolder{
         public ImageView img;
@@ -135,7 +169,7 @@ public class ContentActivity extends AppCompatActivity {
             //holder.img.setImageResource(R.drawable.timg);
             if(position == 0)
             {
-                holder.text.setText(title);
+                holder.text.setText((CharSequence) title);
                 holder.img.setBackgroundResource(R.drawable.i1);
              }
             else if(position == this.getCount()-1) {
@@ -150,67 +184,8 @@ public class ContentActivity extends AppCompatActivity {
             }
             return convertView;
         }
-=======
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText(intent.getStringExtra("title"));
 
-
-        mTts = SpeechSynthesizer.createSynthesizer(ContentActivity.this, mTtsInitListener);
-        mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan");
-        mTts.setParameter(SpeechConstant.PITCH, "50");
-        mTts.setParameter(SpeechConstant.VOLUME, "80");
-        Button button;
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mTts != null)
-                {
-                    if (!isTtsPlaying) {
-                        String text = "起爷起爷起";
-                        int code = mTts.startSpeaking(text, mTtsListener);
-                        Toast.makeText(ContentActivity.this,
-                                String.valueOf(code), Toast.LENGTH_SHORT).show();
-                        if (code != ErrorCode.SUCCESS) {
-                            Toast.makeText(ContentActivity.this,
-                                    "failed" + code,
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            isTtsPlaying = true;
-                            Toast.makeText(ContentActivity.this,
-                                    "reading", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        isTtsPlaying = false;
-                        mTts.stopSpeaking();
-                    }
-                }else {
-                    Toast.makeText(ContentActivity.this,
-                            "init failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
         //TODO ALSO NEED TO SET LISTENER FOR "BACK"
-
-//        btn_rs_skip = (Button)findViewById(R.id.btn_rs_skip);
-//        btn_rs_skip.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {//采用Intent绑定Bundle的形式回传值
-//
-//                //新建一个Bundle，Bundle主要放值类型
-//                Bundle bundle = new Bundle();
-//                bundle.putString("rs", "我是RsActivity关闭后回传的值！");
-//                //将Bundle赋给Intent
-//                data.putExtras(bundle);
-//                //跳转回MainActivity
-//                //注意下面的RESULT_OK常量要与回传接收的Activity中onActivityResult（）方法一致
-//                RsActivity.this.setResult(RESULT_OK, data);
-//                //关闭当前activity
-//                RsActivity.this.finish();
-//            }
-//        });
->>>>>>> 9fd3b76f98b89367b76a55a63989b0063fae9917
 
     }
 

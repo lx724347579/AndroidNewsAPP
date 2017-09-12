@@ -5,10 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/JavaHw.iml" filepath="$PROJECT_DIR$/JavaHw.iml" />
       <module fileurl="file://$PROJECT_DIR$/PullToRefresh/PullToRefresh.iml" filepath="$PROJECT_DIR$/PullToRefresh/PullToRefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-<<<<<<< HEAD
-=======
-      <module fileurl="file://$PROJECT_DIR$/as.iml" filepath="$PROJECT_DIR$/as.iml" />
->>>>>>> 9fd3b76f98b89367b76a55a63989b0063fae9917
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
     </modules>
   </component>

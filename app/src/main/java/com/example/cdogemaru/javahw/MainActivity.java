@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
         newsview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                 Intent intent = new Intent(MainActivity.this, ContentActivity.class);
                 intent.putExtra("id",(String)newsapply.newslist.get(i).get("id"));
+                Log.d("ac",(String)newsapply.newslist.get(i).get("id"));
                 startActivityForResult(intent, requestcode);
             }
         });
@@ -102,10 +104,10 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 接收当前Activity跳转后，目标Activity关闭后的回传值
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+     *///
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
 //        switch(resultCode){
 //            case RESULT_OK:{//接收并显示Activity传过来的值
 //                Bundle bundle = data.getExtras();
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 //            default:
 //                break;
 //        }
-    }
+//    }
 
 
 
