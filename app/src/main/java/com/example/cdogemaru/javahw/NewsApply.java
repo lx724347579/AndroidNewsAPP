@@ -49,6 +49,7 @@ public class NewsApply {
                         map = new HashMap<String, Object>();
                         map.put("title", tmpnews.Title);
                         map.put("info", tmpnews.Intro);
+                        map.put("id",tmpnews.ID);
                         if(tmpnews.Pictures.contains(";"))
                             map.put("img", tmpnews.Pictures.split(";")[0]);
                         map.put("img", tmpnews.Pictures);
@@ -74,3 +75,4 @@ public class NewsApply {
     }
 
 }
+

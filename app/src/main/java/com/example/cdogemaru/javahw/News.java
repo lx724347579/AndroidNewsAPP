@@ -21,13 +21,16 @@ public class News {
                 ID = jarry.getString("news_ID");
                 Source = jarry.getString("news_Source");
                 Title = jarry.getString("news_Title");
-                Intro = jarry.getString("news_Intro");
                 News_time = jarry.getString("news_Time");
                 News_url = jarry.getString("news_URL");
                 Author = jarry.getString("news_Author");
                 lang_type = jarry.getString("lang_Type");
                 Pictures = jarry.getString("news_Pictures");
                 Video = jarry.getString("news_Video");
+                if(jarry.has("news_Intro"))
+                    Intro = jarry.getString("news_Intro");
+                if(jarry.has("news_Content"))
+                    Content = jarry.getString("news_Content");
             } catch (JSONException e) {
                 e.printStackTrace();
             }

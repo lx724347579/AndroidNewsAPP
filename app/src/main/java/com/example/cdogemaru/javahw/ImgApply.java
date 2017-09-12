@@ -29,7 +29,7 @@ public class ImgApply {
     // 任务队列
     private List<Task> taskQueue;
     private boolean isRunning = false;
-
+    public boolean Resize = true;
     public ImgApply(){
         // 初始化变量
         caches = new HashMap<String, SoftReference<Bitmap>>();
@@ -38,7 +38,7 @@ public class ImgApply {
         isRunning = true;
         new Thread(runnable).start();
     }
-    public static Bitmap getBitmap(String path) throws IOException {
+    public static Bitmap getBitmap(String path, boolean Resize) throws IOException {
 
         URL url = new URL(path);
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -47,6 +47,8 @@ public class ImgApply {
         if(conn.getResponseCode() == 200){
             InputStream inputStream = conn.getInputStream();
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            if(!Resize)
+                return bitmap;
             int width = bitmap.getWidth();
             int height = bitmap.getHeight();
             float scaleWidth = ((float) 160) / width;
@@ -64,21 +66,6 @@ public class ImgApply {
         return null;
     }
 
-    public static Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
-
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-        bm.recycle();
-        return resizedBitmap;
-    }
     /**
      *
      * @param imageView 需要延迟加载图片的对象
@@ -173,7 +160,7 @@ public class ImgApply {
                     Task task = taskQueue.remove(0);
                     // 将下载的图片添加到缓存
                     try {
-                        task.bitmap = getBitmap(task.path);
+                        task.bitmap = getBitmap(task.path,Resize);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -2,6 +2,7 @@ package com.example.cdogemaru.javahw;
 
 import android.app.ListActivity;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -34,24 +35,24 @@ public class MainActivity extends AppCompatActivity {
     private int requestcode = 1500;
     int pageno = 1;
     private MyAdapter adapter;
-    private NewsApply kernel;
+    private NewsApply newsapply;
     private ImgApply imgapply;
 
     PullToRefreshListView newsview;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        //mData = kernel.getData();
+        //mData = newsapply.getData();
         setContentView(R.layout.activity_main);
         newsview = (PullToRefreshListView) findViewById(R.id.newsview);
         adapter = new MyAdapter(this);
-        kernel = new NewsApply();
+        newsapply = new NewsApply();
         imgapply = new ImgApply();
         //TODO LOAD THE DATA
 
-        kernel.getData(pageno);
+        newsapply.getData(pageno);
         while(true) {
-            if(kernel.finished)
+            if(newsapply.finished)
                 break;
         }
 
@@ -62,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(MainActivity.this, ContentActivity.class);
-                Bundle map = kernel.getNewsById(i-1);
-                intent.putExtras(map);
+                intent.putExtra("id",(String)newsapply.newslist.get(i).get("id"));
                 startActivityForResult(intent, requestcode);
             }
         });
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //TODO: REFRESH THE DATA
 
-                kernel.getData(++pageno);
+                newsapply.getData(++pageno);
 
 
                 //newsview.getRefreshableView().setSelection(pageno*20 - 20);
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                         newsview.onRefreshComplete();
                     }
-                }, 200);
+                }, 500);
             }
         });
     }
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return kernel.newslist.size();
+            return newsapply.newslist.size();
         }
 
         @Override
@@ -161,18 +161,18 @@ public class MainActivity extends AppCompatActivity {
             }else {
                 holder = (ViewHolder)convertView.getTag();
             }
-            //holder.img.setImageBitmap((Bitmap)kernel.newslist.get(position).get("img"));
+            //holder.img.setImageBitmap((Bitmap)newsapply.newslist.get(position).get("img"));
 
 
             //holder.img.setImageResource(R.drawable.timg);
-            String imgurl = (String)kernel.newslist.get(position).get("img");
-            if(imgurl.isEmpty())
+            String imgurl = (String)newsapply.newslist.get(position).get("img");
+            if(imgurl.length() <= 0)
                 holder.img.setImageResource(R.drawable.timg);
             else
                 imgapply.showImageAsyn(holder.img,imgurl,R.drawable.timg);
 
-            holder.title.setText((String)kernel.newslist.get(position).get("title"));
-            holder.info.setText((String)kernel.newslist.get(position).get("info"));
+            holder.title.setText((String)newsapply.newslist.get(position).get("title"));
+            holder.info.setText((String)newsapply.newslist.get(position).get("info"));
             return convertView;
         }
 
