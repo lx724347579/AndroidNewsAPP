@@ -1,7 +1,4 @@
-package com.example.cdogemaru.javahw;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+package com.java.a21;
 import android.os.Bundle;
 
 import java.util.*;
@@ -52,7 +49,8 @@ public class NewsApply {
                         map.put("id",tmpnews.ID);
                         if(tmpnews.Pictures.contains(";"))
                             map.put("img", tmpnews.Pictures.split(";")[0]);
-                        map.put("img", tmpnews.Pictures);
+                        else
+                            map.put("img", tmpnews.Pictures);
 
                         //map.put("img","11");
                         newslist.add(map);

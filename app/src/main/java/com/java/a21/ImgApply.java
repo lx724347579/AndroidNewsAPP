@@ -1,4 +1,4 @@
-package com.example.cdogemaru.javahw;
+package com.java.a21;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

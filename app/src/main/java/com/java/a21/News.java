@@ -1,4 +1,4 @@
-package com.example.cdogemaru.javahw;
+package com.java.a21;
 
 import java.util.HashMap;
 import java.util.Map;

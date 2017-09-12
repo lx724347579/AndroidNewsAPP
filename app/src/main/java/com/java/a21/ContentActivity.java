@@ -1,10 +1,9 @@
-package com.example.cdogemaru.javahw;
+package com.java.a21;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,27 +11,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cdogemaru.javahw.R;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
-import com.iflytek.cloud.SpeechUtility;
 import com.iflytek.cloud.SynthesizerListener;
 
-import org.w3c.dom.Text;
-
-import java.io.LineNumberReader;
 import java.util.ArrayList;
-
-import static java.io.FileDescriptor.in;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -60,7 +54,9 @@ public class ContentActivity extends AppCompatActivity {
 
         GetNewsContent apply = new GetNewsContent();
         apply.getData("http://166.111.68.66:2042/news/action/query/detail?newsId=" + intent.getStringExtra("id"));
+
         while (true) {
+            Log.v("ac","1");
             if (apply.finished)
                 break;
         }
@@ -71,7 +67,7 @@ public class ContentActivity extends AppCompatActivity {
         if(tmp.length() > 0)
             if (tmp.contains(";"))
             {
-                String[] c = tmp.split(";");
+                String[] c = tmp.split(";|\\s");
                 for (int i = 0; i < c.length; i++)
                     imagelist.add(c[i]);
             }
@@ -86,9 +82,15 @@ public class ContentActivity extends AppCompatActivity {
         mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan");
         mTts.setParameter(SpeechConstant.PITCH, "50");
         mTts.setParameter(SpeechConstant.VOLUME, "80");
-        Button button;
-        button = (Button) findViewById(R.id.button);
-
+        ImageButton button;
+        button = (ImageButton) findViewById(R.id.button);
+        button.setImageDrawable(getResources().getDrawable(R.drawable.ads));
+        ImageButton button1;
+        button1 = (ImageButton) findViewById(R.id.button1);
+        button1.setImageDrawable(getResources().getDrawable(R.drawable.share));
+        ImageButton button2;
+        button2 = (ImageButton) findViewById(R.id.button2);
+        button2.setImageDrawable(getResources().getDrawable(R.drawable.star));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,23 +160,19 @@ public class ContentActivity extends AppCompatActivity {
                 convertView = mInflater.inflate(R.layout.item,null);
                 holder.img = (ImageView)convertView.findViewById(R.id.img);
                 holder.text = (TextView)convertView.findViewById(R.id.text);
-
-                    convertView.setTag(holder);
+                convertView.setTag(holder);
             }else {
                 holder = (ContentActivity.ViewHolder)convertView.getTag();
             }
-            //holder.img.setImageBitmap((Bitmap)newsapply.newslist.get(position).get("img"));
-
-
-            //holder.img.setImageResource(R.drawable.timg);
-            if(position == 0)
-            {
+            if(position == 0) {
                 holder.text.setText((CharSequence) title);
-                holder.img.setBackgroundResource(R.drawable.i1);
+                holder.text.setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);
+                holder.text.setTextSize(40);
+                holder.img.setImageDrawable(null);
              }
             else if(position == this.getCount()-1) {
                 holder.text.setText(text);
-                holder.img.setBackgroundResource(R.drawable.i1);
+                holder.img.setImageDrawable(null);
             }
             else {
                 String imgurl = (String)imagelist.get(position-1);

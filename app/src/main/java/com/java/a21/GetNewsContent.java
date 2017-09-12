@@ -1,6 +1,4 @@
-package com.example.cdogemaru.javahw;
-
-import android.util.Log;
+package com.java.a21;
 
 import org.json.JSONObject;
 

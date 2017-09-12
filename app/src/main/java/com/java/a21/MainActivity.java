@@ -1,36 +1,18 @@
-package com.example.cdogemaru.javahw;
+package com.java.a21;
 
-import android.app.ListActivity;
-import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.*;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.*;
-import java.util.*;
 import android.view.*;
 import android.content.*;
 
+import com.example.cdogemaru.javahw.R;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshExpandableListView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SpeechUtility;
-import com.yalantis.phoenix.PullToRefreshView;
-
-import butterknife.BindView;
-import java.util.regex.*;
-import java.io.*;
-import java.net.*;
-import org.json.*;
-import java.util.List;
-import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -67,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 Intent intent = new Intent(MainActivity.this, ContentActivity.class);
-                intent.putExtra("id",(String)newsapply.newslist.get(i).get("id"));
+                intent.putExtra("id",(String)newsapply.newslist.get(i-1).get("id"));
                 Log.d("ac",(String)newsapply.newslist.get(i).get("id"));
-                startActivityForResult(intent, requestcode);
+                startActivity(intent);
             }
         });
 
@@ -89,37 +71,16 @@ public class MainActivity extends AppCompatActivity {
 
                 newsapply.getData(++pageno);
 
-
-                //newsview.getRefreshableView().setSelection(pageno*20 - 20);
                 newsview.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         adapter.notifyDataSetChanged();
                         newsview.onRefreshComplete();
                     }
-                }, 500);
+                }, 1000);
             }
         });
     }
-
-    /**
-     * 接收当前Activity跳转后，目标Activity关闭后的回传值
-     *///
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        switch(resultCode){
-//            case RESULT_OK:{//接收并显示Activity传过来的值
-//                Bundle bundle = data.getExtras();
-//                String rs = bundle.getString("rs");
-//                tv_main_result.setText(rs);
-//                break;
-//            }
-//            default:
-//                break;
-//        }
-//    }
-
 
 
     public final class ViewHolder{
