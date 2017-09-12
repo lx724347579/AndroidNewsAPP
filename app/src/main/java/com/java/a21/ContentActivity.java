@@ -18,7 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cdogemaru.javahw.R;
+import com.java.a21.R;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.SpeechConstant;
@@ -84,10 +84,10 @@ public class ContentActivity extends AppCompatActivity {
         mTts.setParameter(SpeechConstant.VOLUME, "80");
         ImageButton button;
         button = (ImageButton) findViewById(R.id.button);
-        button.setImageDrawable(getResources().getDrawable(R.drawable.ads));
+        button.setImageDrawable(getResources().getDrawable(R.drawable.sound));
         ImageButton button1;
         button1 = (ImageButton) findViewById(R.id.button1);
-        button1.setImageDrawable(getResources().getDrawable(R.drawable.share));
+        button1.setImageDrawable(getResources().getDrawable(R.drawable.share2));
         ImageButton button2;
         button2 = (ImageButton) findViewById(R.id.button2);
         button2.setImageDrawable(getResources().getDrawable(R.drawable.star));

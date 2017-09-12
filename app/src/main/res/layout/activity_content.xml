@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.cdogemaru.javahw.com.java.a21.ContentActivity">
+    tools:context="com.java.a21.ContentActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" >
         <ImageButton
             android:id="@+id/button"
-            android:layout_width="50dp"
+            android:layout_width="48dp"
             android:layout_height="48dp"
             tools:layout_constraintTop_creator="1"
             tools:layout_constraintRight_creator="1"
@@ -27,27 +27,31 @@
             android:layout_marginTop="2dp"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
             app:layout_constraintTop_toTopOf="parent" />
-            <ImageButton
-                android:id="@+id/button1"
-                android:layout_width="50dp"
-                android:layout_height="48dp"
-                tools:layout_constraintTop_creator="1"
-                tools:layout_constraintRight_creator="1"
-                app:layout_constraintRight_toRightOf="@+id/textView"
-                android:layout_marginTop="2dp"
-                android:layout_gravity="right"
-                android:background="@android:color/transparent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <ImageButton
-            android:id="@+id/button2"
-            android:layout_width="50dp"
+        <ImageButton
+            android:id="@+id/button1"
+            android:layout_width="48dp"
             android:layout_height="48dp"
             tools:layout_constraintTop_creator="1"
             tools:layout_constraintRight_creator="1"
             app:layout_constraintRight_toRightOf="@+id/textView"
             android:layout_marginTop="2dp"
             android:layout_gravity="right"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:id="@+id/button2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            tools:layout_constraintTop_creator="1"
+            tools:layout_constraintRight_creator="1"
+
+            app:layout_constraintRight_toRightOf="@+id/textView"
+            android:layout_marginTop="2dp"
+            android:layout_gravity="right"
+            android:scaleType="fitCenter"
             android:background="@android:color/transparent"
             app:layout_constraintTop_toTopOf="parent" />
         </android.support.v7.widget.Toolbar>
