@@ -49,6 +49,8 @@ public class ImgApply {
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
             if(!Resize)
                 return bitmap;
+            if(bitmap == null)
+                return bitmap;
             int width = bitmap.getWidth();
             int height = bitmap.getHeight();
             float scaleWidth = ((float) 160) / width;

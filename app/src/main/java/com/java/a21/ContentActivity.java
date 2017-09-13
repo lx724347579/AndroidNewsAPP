@@ -18,6 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.java.a21.R;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
@@ -31,7 +33,7 @@ import java.util.ArrayList;
 public class ContentActivity extends AppCompatActivity {
 
     private ListView listview;
-    private ImgApply imgapply;
+    private RequestOptions requestOptions;
 
     private ArrayList<String>imagelist  = new ArrayList<String>();
     private String title, text;
@@ -47,9 +49,11 @@ public class ContentActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.timg);
+        requestOptions.error(R.drawable.timg);
 
-        imgapply = new ImgApply();
-        imgapply.Resize = false;
+
         Intent intent = getIntent();
 
         GetNewsContent apply = new GetNewsContent();
@@ -64,6 +68,7 @@ public class ContentActivity extends AppCompatActivity {
         title = apply.news.Title;
         text = apply.news.Content;
         String tmp = apply.news.Pictures;
+        Log.i("pic",tmp);
         if(tmp.length() > 0)
             if (tmp.contains(";"))
             {
@@ -168,17 +173,21 @@ public class ContentActivity extends AppCompatActivity {
                 holder.text.setText((CharSequence) title);
                 holder.text.setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);
                 holder.text.setTextSize(40);
-                holder.img.setImageDrawable(null);
+                Glide.with(listview).load("").into(holder.img);
              }
-            else if(position == this.getCount()-1) {
-                holder.text.setText(text);
-                holder.img.setImageDrawable(null);
-            }
             else {
-                String imgurl = (String)imagelist.get(position-1);
-                holder.text.setText("");
-                imgapply.showImageAsyn(holder.img,imgurl,R.drawable.timg);
+                if(position == this.getCount()-1) {
+                    holder.text.setText(text);
+                    holder.img.setImageDrawable(null);
+                }
+                else {
+                    String imgurl = (String)imagelist.get(position-1);
+                    holder.text.setText("");
+                    Log.i("pics",imgurl);
+                    Glide.with(listview).load(imgurl).apply(requestOptions).into(holder.img);
+                    //imgapply.showImageAsyn(holder.img,imgurl,R.drawable.timg);
 
+                }
             }
             return convertView;
         }

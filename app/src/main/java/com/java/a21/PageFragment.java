@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -33,9 +36,8 @@ public class PageFragment extends Fragment {
     Context context;
     private MyAdapter adapter;
     private NewsApply newsapply;
-    private ImgApply imgapply;
+    private RequestOptions requestOptions;
     PullToRefreshListView newsview;
-
     public static PageFragment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("type", type);
@@ -49,23 +51,30 @@ public class PageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mtype = getArguments().getString("type");
         context = this.getActivity();
+        Glide.with(context);
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
+        requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.timg);
+        requestOptions.error(R.drawable.timg);
+        //requestOptions.override(160,178);
+        requestOptions.fitCenter();
 
         //setContentView(R.layout.activity_main);
         newsview = (PullToRefreshListView) view.findViewById(R.id.newsview);
         adapter = new MyAdapter(this.getActivity());
         newsapply = new NewsApply();
-        imgapply = new ImgApply();
         SpeechUtility.createUtility(this.getActivity(), SpeechConstant.APPID + "=59a78bf9");
         //TODO LOAD THE DATA
 
         newsapply.getData(pageno);
         while(true) {
+            Log.d("ac","fuck");
             if(newsapply.finished)
                 break;
         }
@@ -79,7 +88,7 @@ public class PageFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
                 intent.putExtra("id",(String)newsapply.newslist.get(i-1).get("id"));
-                Log.d("ac",(String)newsapply.newslist.get(i).get("id"));
+                Log.d("ac",(String)newsapply.newslist.get(i-1).get("id"));
                 startActivity(intent);
             }
         });
@@ -161,10 +170,13 @@ public class PageFragment extends Fragment {
 
             //holder.img.setImageResource(R.drawable.timg);
             String imgurl = (String)newsapply.newslist.get(position).get("img");
-            if(imgurl.length() <= 0)
-                holder.img.setImageResource(R.drawable.timg);
-            else
-                imgapply.showImageAsyn(holder.img,imgurl,R.drawable.timg);
+
+//            holder.img.setImageResource(R.drawable.timg);
+//            if(imgurl.length() <= 0);
+//            else
+            Glide.with(context).load(imgurl).apply(requestOptions).into(holder.img);
+
+            //    imgapply.showImageAsyn(holder.img,imgurl,R.drawable.timg);
 
             holder.title.setText((String)newsapply.newslist.get(position).get("title"));
             holder.info.setText((String)newsapply.newslist.get(position).get("info"));
