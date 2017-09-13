@@ -66,9 +66,6 @@ public class ContentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        recreate();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -78,7 +75,6 @@ public class ContentActivity extends AppCompatActivity {
         requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.timg);
         requestOptions.error(R.drawable.timg);
-
 
         Intent intent = getIntent();
         newsid = intent.getStringExtra("id");

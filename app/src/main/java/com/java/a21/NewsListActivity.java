@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 
 public class NewsListActivity extends AppCompatActivity {
@@ -22,20 +23,36 @@ public class NewsListActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
 
+    private Switch night_mode_switch;
+
+    private Switch no_pictures_switch;
+
     private ImageButton addTabButton;
 
     private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         addTabButton = (ImageButton) findViewById(R.id.addTabButton);
+        night_mode_switch = (Switch) findViewById(R.id.night_mode_switch);
+        no_pictures_switch = (Switch) findViewById(R.id.no_pictures_switch);
         setSupportActionBar(toolbar);
 
-
+        night_mode_switch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                Boolean checked = ((Switch)view).isChecked();
+                if (checked)
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                else
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                recreate();
+            }
+        });
 
         addTabButton.setOnClickListener(new View.OnClickListener() {
 
