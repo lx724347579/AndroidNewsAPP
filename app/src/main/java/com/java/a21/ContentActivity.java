@@ -29,6 +29,13 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
+import com.sina.weibo.sdk.WbSdk;
+import com.sina.weibo.sdk.api.ImageObject;
+import com.sina.weibo.sdk.api.TextObject;
+import com.sina.weibo.sdk.api.WebpageObject;
+import com.sina.weibo.sdk.api.WeiboMultiMessage;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.share.WbShareHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -137,6 +144,30 @@ public class ContentActivity extends AppCompatActivity {
                     Toast.makeText(ContentActivity.this,
                             "init failed", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 WbSdk.install(ContentActivity.this, new AuthInfo(ContentActivity.this,Constants.APP_KEY,Constants.REDIRECT_URL,Constants.SCOPE));
+                 WbShareHandler shareHandler = new WbShareHandler(ContentActivity.this);
+                 shareHandler.registerApp();
+                 WebpageObject mediaObj = new WebpageObject();
+                 //创建文本消息对象
+                 TextObject textObject = new TextObject();
+                 textObject.text = "分享内容的描述"+"网络地址";
+                 textObject.title = getTitle().toString();
+                 //创建图片消息对象，如果只分享文字和网页就不用加图片
+                 WeiboMultiMessage message = new WeiboMultiMessage();
+                 ImageObject imageObject = new ImageObject();
+                 // 设置 Bitmap 类型的图片到视频对象里        设置缩略图。 注意：最终压缩过的缩略图大小 不得超过 32kb。
+                 //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), );
+                 //imageObject.setImageObject(bitmap);
+                 message.textObject = textObject;
+                 //message.imageObject = imageObject;
+                 message.mediaObject = mediaObj;
+                 shareHandler.shareMessage(message, false);
             }
         });
 
