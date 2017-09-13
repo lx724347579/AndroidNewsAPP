@@ -7,9 +7,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
@@ -70,7 +72,7 @@ public class NewsListActivity extends AppCompatActivity {
         return true;
     }
 
-    public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
+    public class SimpleFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
         int pagecount = labelnum;
         private String tabTitles[] = new String[]{
@@ -108,13 +110,19 @@ public class NewsListActivity extends AppCompatActivity {
                 }
                 if(cnt == position + 1) {
                     break;
+
                 }
             }
             return tabTitles[result];
         }
 
         @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+        @Override
         public Fragment getItem(int position) {
+            Log.d("fuck",String.valueOf(position)+gettitle(position));
             return PageFragment.newInstance(gettitle(position));
             //return PageFragment.newInstance(tabTitles[position]);
         }

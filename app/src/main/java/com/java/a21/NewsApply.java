@@ -1,5 +1,6 @@
 package com.java.a21;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.*;
 import java.io.*;
@@ -10,10 +11,14 @@ public class NewsApply {
     List<Map<String, Object>> newslist = new ArrayList<Map<String, Object>>();
     boolean finished;
 
-    public void getData(int page) {
+    public void getData(int page,int cate) {
         finished = false;
         String target_url = "http://166.111.68.66:2042/news/action/query/latest?pageNo=";
-        target_url += String.valueOf(page);
+        if(cate > 0 ) {
+            target_url += String.valueOf(page);
+            target_url += "&category=" + String.valueOf(cate);
+        }
+
         final String finalTarget_url = target_url;
         Thread thread = new Thread(){
 
