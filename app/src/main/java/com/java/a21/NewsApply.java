@@ -18,7 +18,6 @@ public class NewsApply {
         Thread thread = new Thread(){
 
             public void run() {
-
                 Map<String, Object> map = null;
                 try {
                     URL cs = null;
@@ -42,7 +41,6 @@ public class NewsApply {
 
                     for (int i = 0; i < jsonarray.length(); i++) {
                         News tmpnews = new News(jsonarray.getJSONObject(i));
-
                         map = new HashMap<String, Object>();
                         map.put("title", tmpnews.Title);
                         map.put("info", tmpnews.Intro);
@@ -51,8 +49,6 @@ public class NewsApply {
                             map.put("img", tmpnews.Pictures.split(";")[0]);
                         else
                             map.put("img", tmpnews.Pictures);
-
-                        //map.put("img","11");
                         newslist.add(map);
                     }
                 } catch (Exception e) {
