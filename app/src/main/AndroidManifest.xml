@@ -49,6 +49,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TypeActivity"
+            android:label="@string/title_activity_type"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
