@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.java.a21.R;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
@@ -49,10 +54,9 @@ import java.util.List;
 public class ContentActivity extends AppCompatActivity {
 
     private ListView listview;
-    private RequestOptions requestOptions;
 
     private ArrayList<String>imagelist  = new ArrayList<String>();
-    private String title, text, newsid;
+    private String title, text, newsid, newsintro, newsurl;
     ImageButton button;
     ImageButton button1;
     ImageButton button2;
@@ -61,7 +65,7 @@ public class ContentActivity extends AppCompatActivity {
     private SynthesizerListener mLst;
     boolean isTtsPlaying = false;
     private database db = null;
-
+    Bitmap tmpmap = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,13 +74,10 @@ public class ContentActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         context = this.getBaseContext();
 
-        requestOptions = new RequestOptions();
-        requestOptions.placeholder(R.drawable.timg);
-        requestOptions.error(R.drawable.timg);
-
 
         Intent intent = getIntent();
         newsid = intent.getStringExtra("id");
+        newsintro = intent.getStringExtra("intro");
         GetNewsContent apply = new GetNewsContent();
         apply.getData("http://166.111.68.66:2042/news/action/query/detail?newsId=" + newsid);
 
@@ -90,6 +91,7 @@ public class ContentActivity extends AppCompatActivity {
 
         title = apply.news.Title;
         text = apply.news.Content;
+        newsurl = apply.news.News_url;
         String tmp = apply.news.Pictures;
         Log.i("pic",tmp);
         if(tmp.length() > 0)
@@ -156,14 +158,33 @@ public class ContentActivity extends AppCompatActivity {
                  WebpageObject mediaObj = new WebpageObject();
                  //创建文本消息对象
                  TextObject textObject = new TextObject();
-                 textObject.text = "分享内容的描述"+"网络地址";
-                 textObject.title = getTitle().toString();
+                 textObject.text =  newsintro + "\t" + newsurl;
+                 textObject.title = title;
                  //创建图片消息对象，如果只分享文字和网页就不用加图片
                  WeiboMultiMessage message = new WeiboMultiMessage();
                  ImageObject imageObject = new ImageObject();
                  // 设置 Bitmap 类型的图片到视频对象里        设置缩略图。 注意：最终压缩过的缩略图大小 不得超过 32kb。
-                 //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), );
-                 //imageObject.setImageObject(bitmap);
+                if(imagelist.size() > 0) {
+                    RequestBuilder<Bitmap> requestBuilder = Glide.with(context).asBitmap();
+                    tmpmap = null;
+                    Log.d("weibo",(String)imagelist.get(0));
+
+                    requestBuilder.load((String)imagelist.get(0));
+                    requestBuilder.into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition glideAnimation) {
+                            Log.d("weibo",resource.toString());
+                            tmpmap = resource;
+                        }
+
+                    });
+
+                    if(tmpmap != null) {
+                        Log.d("weibo","yes");
+                        Bitmap mbitmap = tmpmap;//BitmapFactory.decodeResource(getResources(), );
+                        imageObject.setImageObject(mbitmap);
+                    }
+                 }
                  message.textObject = textObject;
                  //message.imageObject = imageObject;
                  message.mediaObject = mediaObj;
@@ -246,12 +267,14 @@ public class ContentActivity extends AppCompatActivity {
                 if(position == this.getCount()-1) {
                     holder.text.setText(text);
                     holder.img.setImageDrawable(null);
+                    holder.text.setTextSize(16);
+                    Glide.with(listview).load("").into(holder.img);
                 }
                 else {
                     String imgurl = (String)imagelist.get(position-1);
                     holder.text.setText("");
                     Log.i("pics",imgurl);
-                    Glide.with(listview).load(imgurl).apply(requestOptions).into(holder.img);
+                    Glide.with(listview).load(imgurl).into(holder.img);
                     //imgapply.showImageAsyn(holder.img,imgurl,R.drawable.timg);
 
                 }

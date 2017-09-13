@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
 
+import java.io.File;
+
 
 public class NewsListActivity extends AppCompatActivity {
     final int labelnum = 13;
@@ -27,15 +29,28 @@ public class NewsListActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
 
-    @Override
+    public static void deleteDirWihtFile(File dir) {
+        if (dir == null || !dir.exists() || !dir.isDirectory())
+            return;
+        for (File file : dir.listFiles()) {
+            if (file.isFile())
+                file.delete(); // 删除所有文件
+            else if (file.isDirectory())
+                deleteDirWihtFile(file); // 递规的方式删除文件夹
+        }
+        dir.delete();// 删除目录本身
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         addTabButton = (ImageButton) findViewById(R.id.addTabButton);
         setSupportActionBar(toolbar);
-
-
+        String path = "/data/data/com.java.a21/files";
+        File file = new File(path);
+        //deleteDirWihtFile(file);
+        Log.d("cao",String.valueOf(file.exists()));
 
         addTabButton.setOnClickListener(new View.OnClickListener() {
 
