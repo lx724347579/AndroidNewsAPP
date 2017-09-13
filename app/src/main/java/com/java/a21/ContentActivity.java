@@ -80,8 +80,6 @@ public class ContentActivity extends AppCompatActivity {
         }
 
         db = new database();
-        if(db.querybyid(newsid).getCount() == 0)
-            db.insert(newsid);
 
         title = apply.news.Title;
         text = apply.news.Content;

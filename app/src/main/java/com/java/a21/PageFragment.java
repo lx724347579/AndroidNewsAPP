@@ -2,6 +2,7 @@ package com.java.a21;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -42,7 +43,7 @@ public class PageFragment extends Fragment {
     private RequestOptions requestOptions;
     PullToRefreshListView newsview;
     private ArrayList<Boolean> gray = new ArrayList<Boolean>();
-
+    database db = null;
     public static PageFragment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("type", type);
@@ -82,9 +83,10 @@ public class PageFragment extends Fragment {
             if(newsapply.finished)
                 break;
         }
-
         for(int i = 0; i < 20; i++)
             gray.add(false);
+
+        RefreshGray();
         newsview.setAdapter(adapter);
 
 
@@ -94,10 +96,17 @@ public class PageFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
                 intent.putExtra("id",(String)newsapply.newslist.get(i-1).get("id"));
-                gray.set(i-1,true);
+
+
                 Log.d("ac",(String)newsapply.newslist.get(i-1).get("id"));
-                startActivity(intent);
+
+                db = new database();
+                if(db.querybyid((String)newsapply.newslist.get(i-1).get("id")).getCount() == 0)
+                    db.insert((String)newsapply.newslist.get(i-1).get("id"));
+                db = null;
+                RefreshGray();
                 adapter.notifyDataSetChanged();
+                startActivity(intent);
             }
         });
 
@@ -128,6 +137,21 @@ public class PageFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void RefreshGray()
+    {
+        db = new database();
+        Cursor cursor = null;
+        for(int i = 0; i < pageno * 20; i++) {
+            cursor = db.querybyid((String)newsapply.newslist.get(i).get("id"));
+            Log.d("c",String.valueOf(i) + " " + String.valueOf(cursor.getCount()));
+            if (cursor.getCount() == 0)
+                gray.set(i, false);
+            else
+                gray.set(i, true);
+        }
+        db = null;
     }
 
     public final class ViewHolder{

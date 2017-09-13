@@ -20,10 +20,14 @@ public class database {
         file.mkdir();
 
         db = SQLiteDatabase.openOrCreateDatabase("/data/data/com.java.a21/databases/news.db", null);
-        //db.execSQL("DROP TABLE newstable");
-        //String stu_table = "create table newstable(id text primary key not null,read INTEGER,collect INTEGER)";
-        //db.execSQL(stu_table);
-        Log.d("db",db.getPath());
+
+        try {
+            Cursor cursor = db.query("newstable", null, null, null, null, null, null);
+        }catch (Exception e){
+                String stu_table = "create table newstable(id text primary key not null,read INTEGER,collect INTEGER)";
+                db.execSQL(stu_table);
+            }
+
     }
 
     public void insert(String id){
