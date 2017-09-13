@@ -16,7 +16,7 @@ import android.widget.ImageButton;
 
 
 public class NewsListActivity extends AppCompatActivity {
-
+    final int labelnum = 13;
     private SimpleFragmentPagerAdapter pagerAdapter;
 
     private ViewPager viewPager;
@@ -72,9 +72,9 @@ public class NewsListActivity extends AppCompatActivity {
 
     public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        int pagecount = 12;
+        int pagecount = labelnum;
         private String tabTitles[] = new String[]{
-                "科技","教育","军事","国内","社会","文化","汽车","国际","体育","财经","健康","娱乐"};
+                "全部","科技","教育","军事","国内","社会","文化","汽车","国际","体育","财经","健康","娱乐"};
         private Context context;
 
         public boolean[] chosen;
@@ -82,14 +82,14 @@ public class NewsListActivity extends AppCompatActivity {
             super(fm);
 
             this.context = context;
-            chosen = new boolean[12];
-            for(int i = 0; i < 12; i ++) {
+            chosen = new boolean[labelnum];
+            for(int i = 0; i < labelnum; i ++) {
                 chosen[i] = true;
             }
         }
         public void refresh() {
             int tmp = 0;
-            for(int i = 0; i < 12; i ++) {
+            for(int i = 0; i < labelnum; i ++) {
                 if(chosen[i] == true) {
                     tmp ++;
                 }
@@ -101,7 +101,7 @@ public class NewsListActivity extends AppCompatActivity {
         public String gettitle(int position) {
             int cnt = 0;
             int result = 0;
-            for(int i = 0; i < 12; i ++) {
+            for(int i = 0; i < labelnum; i ++) {
                 if(chosen[i] == true) {
                     cnt ++;
                     result = i;

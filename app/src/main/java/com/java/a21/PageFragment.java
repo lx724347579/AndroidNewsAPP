@@ -2,6 +2,7 @@ package com.java.a21;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
@@ -25,6 +26,8 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.java.a21.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by Administrator on 2015/7/30.
  */
@@ -38,6 +41,7 @@ public class PageFragment extends Fragment {
     private NewsApply newsapply;
     private RequestOptions requestOptions;
     PullToRefreshListView newsview;
+    private ArrayList<Boolean> gray = new ArrayList<Boolean>();
 
     public static PageFragment newInstance(String type) {
         Bundle args = new Bundle();
@@ -74,11 +78,13 @@ public class PageFragment extends Fragment {
 
         newsapply.getData(pageno);
         while(true) {
-            Log.d("ac","fuck");
+            Log.d("ac","1");
             if(newsapply.finished)
                 break;
         }
 
+        for(int i = 0; i < 20; i++)
+            gray.add(false);
         newsview.setAdapter(adapter);
 
 
@@ -88,8 +94,10 @@ public class PageFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
                 intent.putExtra("id",(String)newsapply.newslist.get(i-1).get("id"));
+                gray.set(i-1,true);
                 Log.d("ac",(String)newsapply.newslist.get(i-1).get("id"));
                 startActivity(intent);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -108,7 +116,8 @@ public class PageFragment extends Fragment {
                 //TODO: REFRESH THE DATA
 
                 newsapply.getData(++pageno);
-
+                for(int i = 0; i < 20; i++)
+                    gray.add(false);
                 newsview.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -180,6 +189,17 @@ public class PageFragment extends Fragment {
 
             holder.title.setText((String)newsapply.newslist.get(position).get("title"));
             holder.info.setText((String)newsapply.newslist.get(position).get("info"));
+            if(gray.get(position))
+            {
+                holder.title.setTextColor(Color.GRAY);
+                holder.info.setTextColor(Color.GRAY);
+            }
+            else
+            {
+                holder.title.setTextColor(Color.BLACK);
+                holder.info.setTextColor(Color.BLACK);
+            }
+
             return convertView;
         }
 

@@ -16,18 +16,18 @@ public class database {
 
     public database() {
 
-//        File file = new File("/data/data/com.java.a21/databases");
-//        file.mkdir();
+        File file = new File("/data/data/com.java.a21/databases");
+        file.mkdir();
 
         db = SQLiteDatabase.openOrCreateDatabase("/data/data/com.java.a21/databases/news.db", null);
-        db.execSQL("DROP TABLE newstable");
-        String stu_table = "create table newstable(id text primary key not null,path text,read INTEGER,collect INTEGER)";
-        db.execSQL(stu_table);
+        //db.execSQL("DROP TABLE newstable");
+        //String stu_table = "create table newstable(id text primary key not null,read INTEGER,collect INTEGER)";
+        //db.execSQL(stu_table);
         Log.d("db",db.getPath());
     }
 
     public void insert(String id){
-        String stu_sql="insert into newstable values ('"+ id  + "','',0,0)";
+        String stu_sql="insert into newstable values ('"+ id  + "',0,0)";
         db.execSQL(stu_sql);
     }
 

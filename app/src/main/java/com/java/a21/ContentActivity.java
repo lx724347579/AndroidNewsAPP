@@ -1,5 +1,6 @@
 package com.java.a21;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -29,7 +30,14 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SynthesizerListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -41,7 +49,7 @@ public class ContentActivity extends AppCompatActivity {
     ImageButton button;
     ImageButton button1;
     ImageButton button2;
-
+    Context context;
     private SpeechSynthesizer mTts;
     private SynthesizerListener mLst;
     boolean isTtsPlaying = false;
@@ -53,6 +61,7 @@ public class ContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_content);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context = this.getBaseContext();
 
         requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.timg);
@@ -139,7 +148,7 @@ public class ContentActivity extends AppCompatActivity {
                 Cursor cursor = db.querybyid(newsid);
                 int tmp = 0;
                 if(cursor.moveToFirst()){
-                    tmp = cursor.getInt(3);
+                    tmp = cursor.getInt(2);
                 }
 
                 if(tmp == 1) {
@@ -280,5 +289,50 @@ public class ContentActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void SaveNews()
+    {
+        String path = "/data/data/con.java.a21/caches/" + newsid;
+        File dir = new File(path);
+        dir.mkdirs();
+        save(title,dir+"/title");
+        save(text,dir+"/text");
+    }
+
+    private void save(String text,String path) {
+        try {
+
+            FileOutputStream outputStream = openFileOutput(path, Activity.MODE_PRIVATE);
+            outputStream.write(text.getBytes());
+            outputStream.flush();
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String read(String path) {
+        String content = null;
+        try {
+            FileInputStream inputStream = this.openFileInput(path);
+            byte[] bytes = new byte[1024];
+            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+            while (inputStream.read(bytes) != -1) {
+                arrayOutputStream.write(bytes, 0, bytes.length);
+            }
+            inputStream.close();
+            arrayOutputStream.close();
+            content = new String(arrayOutputStream.toByteArray());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return content;
+
+    }
 
 }
