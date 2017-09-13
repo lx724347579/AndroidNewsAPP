@@ -38,11 +38,13 @@ public class PageFragment extends Fragment {
     private NewsApply newsapply;
     private RequestOptions requestOptions;
     PullToRefreshListView newsview;
+
     public static PageFragment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("type", type);
         PageFragment pageFragment = new PageFragment();
         pageFragment.setArguments(args);
+
         return pageFragment;
     }
 
@@ -51,8 +53,6 @@ public class PageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mtype = getArguments().getString("type");
         context = this.getActivity();
-        Glide.with(context);
-
     }
 
     @Nullable

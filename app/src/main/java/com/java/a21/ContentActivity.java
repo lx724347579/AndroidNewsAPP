@@ -2,6 +2,7 @@ package com.java.a21;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,11 +37,15 @@ public class ContentActivity extends AppCompatActivity {
     private RequestOptions requestOptions;
 
     private ArrayList<String>imagelist  = new ArrayList<String>();
-    private String title, text;
+    private String title, text, newsid;
+    ImageButton button;
+    ImageButton button1;
+    ImageButton button2;
 
     private SpeechSynthesizer mTts;
     private SynthesizerListener mLst;
     boolean isTtsPlaying = false;
+    private database db = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +60,19 @@ public class ContentActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-
+        newsid = intent.getStringExtra("id");
         GetNewsContent apply = new GetNewsContent();
-        apply.getData("http://166.111.68.66:2042/news/action/query/detail?newsId=" + intent.getStringExtra("id"));
+        apply.getData("http://166.111.68.66:2042/news/action/query/detail?newsId=" + newsid);
 
         while (true) {
             Log.v("ac","1");
             if (apply.finished)
                 break;
         }
+
+        db = new database();
+        if(db.querybyid(newsid).getCount() == 0)
+            db.insert(newsid);
 
         title = apply.news.Title;
         text = apply.news.Content;
@@ -87,13 +96,13 @@ public class ContentActivity extends AppCompatActivity {
         mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan");
         mTts.setParameter(SpeechConstant.PITCH, "50");
         mTts.setParameter(SpeechConstant.VOLUME, "80");
-        ImageButton button;
+
         button = (ImageButton) findViewById(R.id.button);
         button.setImageDrawable(getResources().getDrawable(R.drawable.sound));
-        ImageButton button1;
+
         button1 = (ImageButton) findViewById(R.id.button1);
         button1.setImageDrawable(getResources().getDrawable(R.drawable.share2));
-        ImageButton button2;
+
         button2 = (ImageButton) findViewById(R.id.button2);
         button2.setImageDrawable(getResources().getDrawable(R.drawable.star));
         button.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +129,26 @@ public class ContentActivity extends AppCompatActivity {
                 }else {
                     Toast.makeText(ContentActivity.this,
                             "init failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor cursor = db.querybyid(newsid);
+                int tmp = 0;
+                if(cursor.moveToFirst()){
+                    tmp = cursor.getInt(3);
+                }
+
+                if(tmp == 1) {
+                    db.uncollect(newsid);
+                    button2.setImageDrawable(getResources().getDrawable(R.drawable.star));
+                }
+                else {
+                    db.collect(newsid);
+                    button2.setImageDrawable(getResources().getDrawable(R.drawable.sta1));
                 }
             }
         });
