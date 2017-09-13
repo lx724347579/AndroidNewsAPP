@@ -73,7 +73,7 @@ public class PageFragment extends Fragment {
         newsview = (PullToRefreshListView) view.findViewById(R.id.newsview);
         adapter = new MyAdapter(this.getActivity());
         newsapply = new NewsApply();
-        SpeechUtility.createUtility(this.getActivity(), SpeechConstant.APPID + "=59a78bf9");
+        SpeechUtility.createUtility(this.getActivity(), SpeechConstant.APPID + "=59b678fe");
         //TODO LOAD THE DATA
 
         newsapply.getData(pageno);
