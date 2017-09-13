@@ -33,6 +33,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.sina.weibo.sdk:core:2.0.3:openDefaultRelease@aar'
     compile files('src/main/libs/json-20170516.jar')
     compile project(':PullToRefresh')
     compile files('libs/Msc.jar')
