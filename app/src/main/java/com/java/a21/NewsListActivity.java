@@ -63,7 +63,7 @@ public class NewsListActivity extends AppCompatActivity {
 
         String path = "/data/data/com.java.a21/files";
         File file = new File(path);
-        deleteDirWihtFile(file);
+        //deleteDirWihtFile(file);
         Log.d("cao",String.valueOf(file.exists()));
 
         night_mode_switch.setOnClickListener(new View.OnClickListener()

@@ -32,6 +32,8 @@ public class GetNewsContent {
                         cs = new URL(finalTarget_url);
                         connection = (HttpURLConnection) cs.openConnection();
                         connection.setRequestMethod("GET");
+
+                        connection.setConnectTimeout(100);
                         connection.connect();
 
                     } catch (MalformedURLException e1) {

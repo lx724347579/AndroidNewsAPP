@@ -262,35 +262,47 @@ public class PageFragment extends Fragment {
 
 
     Bitmap tmpmap = null;
-
+    File dir = null;
+    int index = 0;
     private void SaveNewsList()
     {
         if(newsapply.newslist.size() == 0)
             return;
         String path = "/data/data/com.java.a21/files/" + typeid;
-        File dir = new File(path);
+        dir = new File(path);
         dir.mkdirs();
         if(new File(dir + "/title" + String.valueOf(newsapply.newslist.size()-1)).exists())
             return;
         tmpmap = null;
         for(int i = newsapply.newslist.size() - 20; i < newsapply.newslist.size(); i++) {
+            index = i;
+
             readwrite.save((String)newsapply.newslist.get(i).get("title"), dir + "/title" + String.valueOf(i));
             readwrite.save((String)newsapply.newslist.get(i).get("info"), dir + "/info" + String.valueOf(i));
             readwrite.save((String)newsapply.newslist.get(i).get("id"), dir + "/id" + String.valueOf(i));
             RequestBuilder<Bitmap> requestBuilder = Glide.with(context).asBitmap();
             Log.d("savenews",String.valueOf(i));
-            Log.d("savenews",(String)newsapply.newslist.get(i).get("title"));
+            Log.d("savenews",(String)newsapply.newslist.get(i).get("img"));
+
+
             requestBuilder.load((String) newsapply.newslist.get(i).get("img"));
             requestBuilder.into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                int in = index;
                 @Override
                 public void onResourceReady(Bitmap resource, Transition glideAnimation) {
-                    tmpmap = resource;
+                    //tmpmap = resource;
+                    Log.d("savenews",resource.toString());
+                    Log.d("savenews",String.valueOf(in));
+
+                    readwrite.Saveimg(resource, dir + "/img" + String.valueOf(in) + ".jpg");
 
                 }
 
             });
-            if(tmpmap != null)
-                readwrite.Saveimg(tmpmap,dir + String.valueOf(i) + ".jpg");
+//            if(tmpmap != null) {
+//                Log.d("savenews2",tmpmap.toString());
+//                readwrite.Saveimg(tmpmap, dir + String.valueOf(i) + ".jpg");
+//            }
 
         }
     }
