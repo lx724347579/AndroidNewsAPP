@@ -37,7 +37,7 @@ public interface Constants {
      * 建议使用默认回调页：https://api.weibo.com/oauth2/default.html
      * </p>
      */
-    public static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
+    public static final String REDIRECT_URL = "http://api.weibo.com/oauth2/default.html";
 
     /**
      * Scope 是 OAuth2.0 授权机制中 authorize 接口的一个参数。通过 Scope，平台将开放更多的微博

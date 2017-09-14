@@ -57,7 +57,7 @@ public class ContentActivity extends AppCompatActivity {
     private ListView listview;
 
     private ArrayList<String>imagelist  = new ArrayList<String>();
-    private String title, text, newsid, newsintro, newsurl,timeau;
+    private String title = "", text = "", newsid, newsintro, newsurl = "",timeau = "";
     ImageButton button;
     ImageButton button1;
     ImageButton button2;
@@ -88,31 +88,35 @@ public class ContentActivity extends AppCompatActivity {
         apply.getData("http://166.111.68.66:2042/news/action/query/detail?newsId=" + newsid);
 
         while (true) {
-            Log.d("ac","1");
+            //Log.d("ac","1");
             if (apply.finished)
                 break;
         }
 
         db = new database();
 
-        title = apply.news.Title;
-        text = apply.news.Content;
-        timeau = apply.news.Author + "\t" + apply.news.News_time;
+        try {
+            title = apply.news.Title;
+            text = apply.news.Content;
+            timeau = apply.news.Author + "\t" + apply.news.News_time;
+            newsurl = apply.news.News_url;
+            String tmp = apply.news.Pictures;
+            Log.i("pic",tmp);
+            if(tmp.length() > 0)
+                if (tmp.contains(";"))
+                {
+                    String[] c = tmp.split(";|\\s");
+                    for (int i = 0; i < c.length; i++)
+                        imagelist.add(c[i]);
+                }
+                else
+                    imagelist.add(tmp);
+        }catch (Exception e){
+
+        }
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(title);
 
-        newsurl = apply.news.News_url;
-        String tmp = apply.news.Pictures;
-        Log.i("pic",tmp);
-        if(tmp.length() > 0)
-            if (tmp.contains(";"))
-            {
-                String[] c = tmp.split(";|\\s");
-                for (int i = 0; i < c.length; i++)
-                    imagelist.add(c[i]);
-            }
-            else
-                imagelist.add(tmp);
 
         listview = (ListView) findViewById(R.id.newslayout);
         MyAdapter adapter = new MyAdapter(this);
@@ -357,50 +361,4 @@ public class ContentActivity extends AppCompatActivity {
             }
         }
     };
-
-    private void SaveNews()
-    {
-        String path = "/data/data/con.java.a21/caches/" + newsid;
-        File dir = new File(path);
-        dir.mkdirs();
-        save(title,dir+"/title");
-        save(text,dir+"/text");
-    }
-
-    private void save(String text,String path) {
-        try {
-
-            FileOutputStream outputStream = openFileOutput(path, Activity.MODE_PRIVATE);
-            outputStream.write(text.getBytes());
-            outputStream.flush();
-            outputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private String read(String path) {
-        String content = null;
-        try {
-            FileInputStream inputStream = this.openFileInput(path);
-            byte[] bytes = new byte[1024];
-            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-            while (inputStream.read(bytes) != -1) {
-                arrayOutputStream.write(bytes, 0, bytes.length);
-            }
-            inputStream.close();
-            arrayOutputStream.close();
-            content = new String(arrayOutputStream.toByteArray());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return content;
-
-    }
-
 }

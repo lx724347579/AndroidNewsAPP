@@ -1,5 +1,7 @@
 package com.java.a21;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -33,22 +35,28 @@ public class GetNewsContent {
                         connection = (HttpURLConnection) cs.openConnection();
                         connection.setRequestMethod("GET");
 
-                        connection.setConnectTimeout(1000);
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
                         connection.connect();
+
 
                     } catch (MalformedURLException e1) {
                         // TODO Auto-generated catch block
                     }
-
-                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    String inputLine;
-                    inputLine = in.readLine();
-                    jsonobj = new JSONObject(inputLine);
+                    if (connection.getResponseCode() == 200) {
+                        // 获取返回的数据
+                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        String inputLine;
+                        inputLine = in.readLine();
+                        jsonobj = new JSONObject(inputLine);
+                        news = new News(jsonobj);
+                    } else {
+                        Log.d("bug", "Get方式请求失败");
+                    }
 
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                 }
-                news = new News(jsonobj);
                 finished = true;
 
             }
