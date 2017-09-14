@@ -33,7 +33,7 @@ public class GetNewsContent {
                         connection = (HttpURLConnection) cs.openConnection();
                         connection.setRequestMethod("GET");
 
-                        connection.setConnectTimeout(100);
+                        connection.setConnectTimeout(1000);
                         connection.connect();
 
                     } catch (MalformedURLException e1) {

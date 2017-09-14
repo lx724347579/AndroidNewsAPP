@@ -120,11 +120,17 @@ public class NewsListActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(newText == null || newText.equals("")) {
+                    keyword = "";
+                    pagerAdapter.notifyDataSetChanged();
+                }
                 return false;
             }
         });
+
         return true;
     }
+
 
 
 
@@ -179,7 +185,7 @@ public class NewsListActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             Log.d("fuck",String.valueOf(position)+gettitle(position));
-            return PageFragment.newInstance(gettitle(position));
+            return PageFragment.newInstance(gettitle(position),keyword);
             //return PageFragment.newInstance(tabTitles[position]);
         }
 

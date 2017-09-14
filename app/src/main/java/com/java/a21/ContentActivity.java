@@ -164,7 +164,7 @@ public class ContentActivity extends AppCompatActivity {
                  textObject.title = title;
                  //创建图片消息对象，如果只分享文字和网页就不用加图片
                  WeiboMultiMessage message = new WeiboMultiMessage();
-                 ImageObject imageObject = new ImageObject();
+                 //ImageObject imageObject = new ImageObject();
                  // 设置 Bitmap 类型的图片到视频对象里        设置缩略图。 注意：最终压缩过的缩略图大小 不得超过 32kb。
                 if(imagelist.size() > 0) {
                     RequestBuilder<Bitmap> requestBuilder = Glide.with(context).asBitmap();
@@ -184,12 +184,12 @@ public class ContentActivity extends AppCompatActivity {
                     if(tmpmap != null) {
                         Log.d("weibo","yes");
                         Bitmap mbitmap = tmpmap;//BitmapFactory.decodeResource(getResources(), );
-                        imageObject.setImageObject(mbitmap);
+                        //imageObject.setImageObject(mbitmap);
                     }
                  }
                  message.textObject = textObject;
                  //message.imageObject = imageObject;
-                 message.mediaObject = mediaObj;
+                 //message.mediaObject = mediaObj;
                  shareHandler.shareMessage(message, false);
             }
         });

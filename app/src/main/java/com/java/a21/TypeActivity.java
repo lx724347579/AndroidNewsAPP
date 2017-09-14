@@ -50,25 +50,29 @@ public class TypeActivity extends AppCompatActivity {
             button[i].setTextColor(getResources().getColor(R.color.colorWhite));
 
             if(chosen[i] == true) {
-                colors[i][0] = getResources().getColor(R.color.colorPrimary);
+                button[i].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                //colors[i][0] = getResources().getColor(R.color.colorPrimary);
             }
             else {
-                colors[i][0] = getResources().getColor(R.color.colorUnchosen);
+                button[i].setBackgroundColor(getResources().getColor(R.color.colorUnchosen));
+                //colors[i][0] = getResources().getColor(R.color.colorUnchosen);
             }
-            ViewCompat.setBackgroundTintList(button[i], new ColorStateList(states, colors[i]));
+            //ViewCompat.setBackgroundTintList(button[i], new ColorStateList(states, colors[i]));
 
             button[i].setOnClickListener(new View.OnClickListener() {
                 @Override
 
                 public void onClick(View v) {
                     if(chosen[tmp] == false) {
-                        colors[tmp][0] = getResources().getColor(R.color.colorPrimary);
-                        ViewCompat.setBackgroundTintList(button[tmp], new ColorStateList(states, colors[tmp]));
+                        //colors[tmp][0] = getResources().getColor(R.color.colorPrimary);
+                        button[tmp].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        //ViewCompat.setBackgroundTintList(button[tmp], new ColorStateList(states, colors[tmp]));
                         chosen[tmp] = true;
                     }
                     else {
-                        colors[tmp][0] = getResources().getColor(R.color.colorUnchosen);
-                        ViewCompat.setBackgroundTintList(button[tmp], new ColorStateList(states, colors[tmp]));
+                        button[tmp].setBackgroundColor(getResources().getColor(R.color.colorUnchosen));
+                        //colors[tmp][0] = getResources().getColor(R.color.colorUnchosen);
+                        //ViewCompat.setBackgroundTintList(button[tmp], new ColorStateList(states, colors[tmp]));
                         chosen[tmp] = false;
                     }
                 }

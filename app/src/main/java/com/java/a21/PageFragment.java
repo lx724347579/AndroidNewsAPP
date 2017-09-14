@@ -50,7 +50,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class PageFragment extends Fragment {
 
-    private String mtype;
+    private String mtype,keyword;
     private int requestcode = 1500;
     //int pageno = 1;
     int typeid = 0;
@@ -62,9 +62,10 @@ public class PageFragment extends Fragment {
     String [] labels = {"全部","科技","教育","军事","国内","社会","文化","汽车","国际","体育","财经","健康","娱乐"};
     private ArrayList<Boolean> gray = new ArrayList<Boolean>();
     database db = null;
-    public static PageFragment newInstance(String type) {
+    public static PageFragment newInstance(String type,String keyword) {
         Bundle args = new Bundle();
         args.putString("type", type);
+        args.putString("keyword", keyword);
         PageFragment pageFragment = new PageFragment();
         pageFragment.setArguments(args);
 
@@ -76,12 +77,12 @@ public class PageFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         mtype = getArguments().getString("type");
+        keyword = getArguments().getString("keyword");
         context = this.getActivity();
-
+        Log.d("frag",keyword);
         for(int i = 0; i < 13; i++)
             if(mtype == labels[i])
                 typeid = i;
-        Log.d("fuck",mtype);
     }
 
     @Nullable
@@ -102,7 +103,7 @@ public class PageFragment extends Fragment {
         SpeechUtility.createUtility(this.getActivity(), SpeechConstant.APPID + "=59b678fe");
         //TODO LOAD THE DATA
 
-        newsapply.getData(1,typeid);
+        newsapply.getData(1,typeid,keyword);
         while(true) {
             Log.d("ac","1");
             if(newsapply.finished)
@@ -113,7 +114,8 @@ public class PageFragment extends Fragment {
 
         RefreshGray();
         newsview.setAdapter(adapter);
-        SaveNewsList();
+        if(keyword == null || keyword.length() == 0)
+            SaveNewsList();
 
 
         newsview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -151,7 +153,7 @@ public class PageFragment extends Fragment {
 
                 //TODO: REFRESH THE DATA
 
-                newsapply.getData(newsapply.newslist.size()/20+1,typeid);
+                newsapply.getData(newsapply.newslist.size()/20+1,typeid,keyword);
 
                 for(int i = 0; i < 20; i++)
                     gray.add(false);
@@ -160,7 +162,8 @@ public class PageFragment extends Fragment {
                     public void run() {
                         adapter.notifyDataSetChanged();
                         newsview.onRefreshComplete();
-                        SaveNewsList();
+                        if(keyword == null || keyword.length() == 0)
+                            SaveNewsList();
                     }
                 }, 1000);
 //                if(newsapply.finished == true)
