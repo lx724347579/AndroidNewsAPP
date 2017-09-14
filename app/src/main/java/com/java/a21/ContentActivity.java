@@ -67,8 +67,9 @@ public class ContentActivity extends AppCompatActivity {
     boolean isTtsPlaying = false;
     private database db = null;
     Bitmap tmpmap = null;
-
+    WeiboMultiMessage message = null;
     ImageObject imageObject = null;
+    WbShareHandler shareHandler = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -162,7 +163,7 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                  WbSdk.install(ContentActivity.this, new AuthInfo(ContentActivity.this,Constants.APP_KEY,Constants.REDIRECT_URL,Constants.SCOPE));
-                 WbShareHandler shareHandler = new WbShareHandler(ContentActivity.this);
+                 shareHandler = new WbShareHandler(ContentActivity.this);
                  shareHandler.registerApp();
                  WebpageObject mediaObj = new WebpageObject();
                  //创建文本消息对象
@@ -170,30 +171,33 @@ public class ContentActivity extends AppCompatActivity {
                  textObject.text =  newsintro + "\t" + newsurl;
                  textObject.title = title;
                  //创建图片消息对象，如果只分享文字和网页就不用加图片
-                 WeiboMultiMessage message = new WeiboMultiMessage();
+                 message = new WeiboMultiMessage();
 
-                 // 设置 Bitmap 类型的图片到视频对象里        设置缩略图。 注意：最终压缩过的缩略图大小 不得超过 32kb。
-                if(imagelist.size() > 0) {
-                    imageObject = new ImageObject();
-                    RequestBuilder<Bitmap> requestBuilder = Glide.with(context).asBitmap();
-
-                    Log.d("weibo",(String)imagelist.get(0));
-
-                    requestBuilder.load((String)imagelist.get(0));
-                    requestBuilder.into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
-                        @Override
-                        public void onResourceReady(Bitmap resource, Transition glideAnimation) {
-                            imageObject.setImageObject(resource);
-
-                            Log.d("weibo",resource.toString());
-                            }
-
-                        });
-                    message.imageObject = imageObject;
-                 }
                  message.textObject = textObject;
+                  // 设置 Bitmap 类型的图片到视频对象里        设置缩略图。 注意：最终压缩过的缩略图大小 不得超过 32kb。
+                 if(imagelist.size() > 0) {
+                     imageObject = new ImageObject();
+                     RequestBuilder<Bitmap> requestBuilder = Glide.with(context).asBitmap();
+
+                     Log.d("weibo",(String)imagelist.get(0));
+
+                     requestBuilder.load((String)imagelist.get(0));
+                     requestBuilder.into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                         @Override
+                         public void onResourceReady(Bitmap resource, Transition glideAnimation) {
+                             imageObject.setImageObject(resource);
+                             message.imageObject = imageObject;
+                             shareHandler.shareMessage(message, false);
+
+                             Log.d("weibo",resource.toString());
+                             }
+
+                         });
+                 }
+                 else
+
+                     shareHandler.shareMessage(message, false);
                  //message.mediaObject = mediaObj;
-                 shareHandler.shareMessage(message, false);
             }
         });
 
