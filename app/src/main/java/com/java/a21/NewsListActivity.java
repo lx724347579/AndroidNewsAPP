@@ -13,38 +13,29 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-<<<<<<< HEAD
 import android.support.v7.app.AppCompatDelegate;
-=======
 import android.support.v7.widget.SearchView;
->>>>>>> 70701481f7c99a5089e4fa2a7d18dca351683fa1
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
-<<<<<<< HEAD
 import android.widget.Switch;
 
 import java.io.File;
-=======
 import android.widget.Toast;
->>>>>>> 70701481f7c99a5089e4fa2a7d18dca351683fa1
 
 
 public class NewsListActivity extends AppCompatActivity {
     final int labelnum = 13;
     private SimpleFragmentPagerAdapter pagerAdapter;
     private ViewPager viewPager;
-<<<<<<< HEAD
 
     private Switch night_mode_switch;
 
     private Switch no_pictures_switch;
 
-=======
->>>>>>> 70701481f7c99a5089e4fa2a7d18dca351683fa1
     private ImageButton addTabButton;
     private TabLayout tabLayout;
     String keyword = new String();
@@ -69,7 +60,6 @@ public class NewsListActivity extends AppCompatActivity {
         night_mode_switch = (Switch) findViewById(R.id.night_mode_switch);
         no_pictures_switch = (Switch) findViewById(R.id.no_pictures_switch);
         setSupportActionBar(toolbar);
-<<<<<<< HEAD
 
         String path = "/data/data/com.java.a21/files";
         File file = new File(path);
@@ -89,8 +79,6 @@ public class NewsListActivity extends AppCompatActivity {
             }
         });
 
-=======
->>>>>>> 70701481f7c99a5089e4fa2a7d18dca351683fa1
         addTabButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
