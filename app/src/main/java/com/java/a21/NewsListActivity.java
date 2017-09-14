@@ -1,8 +1,11 @@
 package com.java.a21;
 
+import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,30 +13,41 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+<<<<<<< HEAD
 import android.support.v7.app.AppCompatDelegate;
+=======
+import android.support.v7.widget.SearchView;
+>>>>>>> 70701481f7c99a5089e4fa2a7d18dca351683fa1
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+<<<<<<< HEAD
 import android.widget.Switch;
 
 import java.io.File;
+=======
+import android.widget.Toast;
+>>>>>>> 70701481f7c99a5089e4fa2a7d18dca351683fa1
 
 
 public class NewsListActivity extends AppCompatActivity {
     final int labelnum = 13;
     private SimpleFragmentPagerAdapter pagerAdapter;
-
     private ViewPager viewPager;
+<<<<<<< HEAD
 
     private Switch night_mode_switch;
 
     private Switch no_pictures_switch;
 
+=======
+>>>>>>> 70701481f7c99a5089e4fa2a7d18dca351683fa1
     private ImageButton addTabButton;
-
     private TabLayout tabLayout;
+    String keyword = new String();
 
     public static void deleteDirWihtFile(File dir) {
         if (dir == null || !dir.exists() || !dir.isDirectory())
@@ -55,6 +69,7 @@ public class NewsListActivity extends AppCompatActivity {
         night_mode_switch = (Switch) findViewById(R.id.night_mode_switch);
         no_pictures_switch = (Switch) findViewById(R.id.no_pictures_switch);
         setSupportActionBar(toolbar);
+<<<<<<< HEAD
 
         String path = "/data/data/com.java.a21/files";
         File file = new File(path);
@@ -74,6 +89,8 @@ public class NewsListActivity extends AppCompatActivity {
             }
         });
 
+=======
+>>>>>>> 70701481f7c99a5089e4fa2a7d18dca351683fa1
         addTabButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -84,7 +101,6 @@ public class NewsListActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1500);
             }
         });
-
         pagerAdapter = new SimpleFragmentPagerAdapter(getSupportFragmentManager(), this);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(pagerAdapter);
@@ -92,10 +108,6 @@ public class NewsListActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
     }
-
-    //重写   处理返回信息的监听（回调方法）
-    //onActivityResult通用监听  监听所有返回信息的
-    //必须要有requestCode区分有哪个请求返回的
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -106,8 +118,27 @@ public class NewsListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);//指定Toolbar上的视图文件
+        final SearchView searchview = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchview.setSubmitButtonEnabled(true);
+        searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                keyword = query;
+                pagerAdapter.notifyDataSetChanged();
+
+                Toast.makeText(NewsListActivity.this, query, Toast.LENGTH_SHORT);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
+
+
 
     public class SimpleFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
