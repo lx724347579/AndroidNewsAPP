@@ -1,10 +1,14 @@
 package com.java.a21;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -36,28 +40,35 @@ public class TypeActivity extends AppCompatActivity {
             }
         });
 
-
+        final int[][] colors = new int[labelnum][1];
+        final int[][] states = new int[1][];
+        states[0] = new int[]{android.R.attr.state_enabled};
         for(int i = 0; i < labelnum; i ++) {
             final int tmp = i;
             button[i] = (Button) findViewById(id[i]);
             button[i].setText(typename[i]);
+            button[i].setTextColor(getResources().getColor(R.color.colorWhite));
+
             if(chosen[i] == true) {
-                button[i].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                colors[i][0] = getResources().getColor(R.color.colorPrimary);
             }
             else {
-                button[i].setBackgroundColor(getResources().getColor(R.color.colorUnchosen));
+                colors[i][0] = getResources().getColor(R.color.colorUnchosen);
             }
+            ViewCompat.setBackgroundTintList(button[i], new ColorStateList(states, colors[i]));
 
             button[i].setOnClickListener(new View.OnClickListener() {
                 @Override
 
                 public void onClick(View v) {
                     if(chosen[tmp] == false) {
-                        button[tmp].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        colors[tmp][0] = getResources().getColor(R.color.colorPrimary);
+                        ViewCompat.setBackgroundTintList(button[tmp], new ColorStateList(states, colors[tmp]));
                         chosen[tmp] = true;
                     }
                     else {
-                        button[tmp].setBackgroundColor(getResources().getColor(R.color.colorUnchosen));
+                        colors[tmp][0] = getResources().getColor(R.color.colorUnchosen);
+                        ViewCompat.setBackgroundTintList(button[tmp], new ColorStateList(states, colors[tmp]));
                         chosen[tmp] = false;
                     }
                 }
