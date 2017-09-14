@@ -76,13 +76,6 @@ public class ContentActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         context = this.getBaseContext();
 
-<<<<<<< HEAD
-=======
-        requestOptions = new RequestOptions();
-        requestOptions.placeholder(R.drawable.timg);
-        requestOptions.error(R.drawable.timg);
->>>>>>> dd51067a74aa63ab99aebe77cba3a2cff05c5f67
-
         Intent intent = getIntent();
         newsid = intent.getStringExtra("id");
         newsintro = intent.getStringExtra("intro");

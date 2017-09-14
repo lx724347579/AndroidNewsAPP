@@ -55,12 +55,11 @@ public class NewsListActivity extends AppCompatActivity {
         night_mode_switch = (Switch) findViewById(R.id.night_mode_switch);
         no_pictures_switch = (Switch) findViewById(R.id.no_pictures_switch);
         setSupportActionBar(toolbar);
-<<<<<<< HEAD
+
         String path = "/data/data/com.java.a21/files";
         File file = new File(path);
         deleteDirWihtFile(file);
         Log.d("cao",String.valueOf(file.exists()));
-=======
 
         night_mode_switch.setOnClickListener(new View.OnClickListener()
         {
@@ -74,7 +73,6 @@ public class NewsListActivity extends AppCompatActivity {
                 recreate();
             }
         });
->>>>>>> dd51067a74aa63ab99aebe77cba3a2cff05c5f67
 
         addTabButton.setOnClickListener(new View.OnClickListener() {
 
