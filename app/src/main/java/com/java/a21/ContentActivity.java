@@ -57,7 +57,7 @@ public class ContentActivity extends AppCompatActivity {
     private ListView listview;
 
     private ArrayList<String>imagelist  = new ArrayList<String>();
-    private String title, text, newsid, newsintro, newsurl;
+    private String title, text, newsid, newsintro, newsurl,timeau;
     ImageButton button;
     ImageButton button1;
     ImageButton button2;
@@ -67,13 +67,16 @@ public class ContentActivity extends AppCompatActivity {
     boolean isTtsPlaying = false;
     private database db = null;
     Bitmap tmpmap = null;
+
+    ImageObject imageObject = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
         context = this.getBaseContext();
 
         Intent intent = getIntent();
@@ -93,6 +96,10 @@ public class ContentActivity extends AppCompatActivity {
 
         title = apply.news.Title;
         text = apply.news.Content;
+        timeau = apply.news.Author + "\t" + apply.news.News_time;
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(title);
+
         newsurl = apply.news.News_url;
         String tmp = apply.news.Pictures;
         Log.i("pic",tmp);
@@ -119,7 +126,7 @@ public class ContentActivity extends AppCompatActivity {
         button.setImageDrawable(getResources().getDrawable(R.drawable.sound));
 
         button1 = (ImageButton) findViewById(R.id.button1);
-        button1.setImageDrawable(getResources().getDrawable(R.drawable.share2));
+        button1.setImageDrawable(getResources().getDrawable(R.drawable.share));
 
         button2 = (ImageButton) findViewById(R.id.button2);
         button2.setImageDrawable(getResources().getDrawable(R.drawable.star));
@@ -164,31 +171,27 @@ public class ContentActivity extends AppCompatActivity {
                  textObject.title = title;
                  //创建图片消息对象，如果只分享文字和网页就不用加图片
                  WeiboMultiMessage message = new WeiboMultiMessage();
-                 //ImageObject imageObject = new ImageObject();
+
                  // 设置 Bitmap 类型的图片到视频对象里        设置缩略图。 注意：最终压缩过的缩略图大小 不得超过 32kb。
                 if(imagelist.size() > 0) {
+                    imageObject = new ImageObject();
                     RequestBuilder<Bitmap> requestBuilder = Glide.with(context).asBitmap();
-                    tmpmap = null;
+
                     Log.d("weibo",(String)imagelist.get(0));
 
                     requestBuilder.load((String)imagelist.get(0));
                     requestBuilder.into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
                         @Override
                         public void onResourceReady(Bitmap resource, Transition glideAnimation) {
+                            imageObject.setImageObject(resource);
+
                             Log.d("weibo",resource.toString());
-                            tmpmap = resource;
-                        }
+                            }
 
-                    });
-
-                    if(tmpmap != null) {
-                        Log.d("weibo","yes");
-                        Bitmap mbitmap = tmpmap;//BitmapFactory.decodeResource(getResources(), );
-                        //imageObject.setImageObject(mbitmap);
-                    }
+                        });
+                    message.imageObject = imageObject;
                  }
                  message.textObject = textObject;
-                 //message.imageObject = imageObject;
                  //message.mediaObject = mediaObj;
                  shareHandler.shareMessage(message, false);
             }
@@ -232,7 +235,7 @@ public class ContentActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-            return imagelist.size() + 2;
+            return imagelist.size() + 3;
         }
 
         @Override
@@ -262,24 +265,31 @@ public class ContentActivity extends AppCompatActivity {
             if(position == 0) {
                 holder.text.setText((CharSequence) title);
                 holder.text.setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);
-                holder.text.setTextSize(40);
+                holder.text.setTextSize(24);
                 Glide.with(listview).load("").into(holder.img);
              }
             else {
-                if(position == this.getCount()-1) {
-                    holder.text.setText(text);
-                    holder.img.setImageDrawable(null);
-                    holder.text.setTextSize(16);
+                if(position == 1) {
+                    holder.text.setText((CharSequence) timeau);
+                    holder.text.setTextSize(8);
+                    holder.text.setTypeface(Typeface.DEFAULT);
                     Glide.with(listview).load("").into(holder.img);
                 }
-                else {
-                    String imgurl = (String)imagelist.get(position-1);
-                    holder.text.setText("");
-                    Log.i("pics",imgurl);
-                    Glide.with(listview).load(imgurl).into(holder.img);
-                    //imgapply.showImageAsyn(holder.img,imgurl,R.drawable.timg);
+                else
+                    if(position == this.getCount()-1) {
+                        holder.text.setText(text);
+                        holder.text.setTextSize(16);
+                        holder.text.setTypeface(Typeface.DEFAULT);
+                        Glide.with(listview).load("").into(holder.img);
+                    }
+                    else {
+                        String imgurl = (String)imagelist.get(position-2);
+                        holder.text.setText("");
+                        Log.i("pics",imgurl);
+                        Glide.with(listview).load(imgurl).into(holder.img);
+                        //imgapply.showImageAsyn(holder.img,imgurl,R.drawable.timg);
 
-                }
+                    }
             }
             return convertView;
         }

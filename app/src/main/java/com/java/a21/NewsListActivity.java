@@ -59,6 +59,10 @@ public class NewsListActivity extends AppCompatActivity {
         addTabButton = (ImageButton) findViewById(R.id.addTabButton);
         night_mode_switch = (Switch) findViewById(R.id.night_mode_switch);
         no_pictures_switch = (Switch) findViewById(R.id.no_pictures_switch);
+
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("News++");
         setSupportActionBar(toolbar);
 
         String path = "/data/data/com.java.a21/files";
@@ -98,9 +102,14 @@ public class NewsListActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        pagerAdapter.chosen = data.getBooleanArrayExtra("chosen");
-        pagerAdapter.refresh();
+
+            super.onActivityResult(requestCode, resultCode, data);
+        try {
+            pagerAdapter.chosen = data.getBooleanArrayExtra("chosen");
+            pagerAdapter.refresh();
+        }catch (NullPointerException e){
+
+        }
     }
 
     @Override

@@ -19,20 +19,24 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" >
         <ImageButton
             android:id="@+id/button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             tools:layout_constraintTop_creator="1"
             tools:layout_constraintRight_creator="1"
             app:layout_constraintRight_toRightOf="@+id/textView"
             android:layout_marginTop="2dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             app:layout_constraintTop_toTopOf="parent" />
         <ImageButton
             android:id="@+id/button1"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
             tools:layout_constraintTop_creator="1"
             tools:layout_constraintRight_creator="1"
             app:layout_constraintRight_toRightOf="@+id/textView"
@@ -43,8 +47,10 @@
             app:layout_constraintTop_toTopOf="parent" />
         <ImageButton
             android:id="@+id/button2"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
             tools:layout_constraintTop_creator="1"
             tools:layout_constraintRight_creator="1"
 
