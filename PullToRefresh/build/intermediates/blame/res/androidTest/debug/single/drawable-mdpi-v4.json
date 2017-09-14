@@ -1,7 +1,19 @@
 [
     {
+        "merged": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\default_ptr_rotate.png",
+        "source": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\default_ptr_rotate.png"
+    },
+    {
+        "merged": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\default_ptr_flip.png",
+        "source": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\default_ptr_flip.png"
+    },
+    {
         "merged": "D:\\files\\documentes\\JAVA\\as\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\indicator_arrow.png",
         "source": "D:\\files\\documentes\\JAVA\\as\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\indicator_arrow.png"
+    },
+    {
+        "merged": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\indicator_arrow.png",
+        "source": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-mdpi-v4\\indicator_arrow.png"
     },
     {
         "merged": "F:\\THU\\JavaHw\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4\\indicator_arrow.png",

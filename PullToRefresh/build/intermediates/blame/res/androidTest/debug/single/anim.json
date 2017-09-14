@@ -28,6 +28,10 @@
         "source": "D:\\files\\documentes\\JAVA\\as\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_bottom.xml"
     },
     {
+        "merged": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_top.xml",
+        "source": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_top.xml"
+    },
+    {
         "merged": "C:\\Users\\cdogemaru\\Desktop\\NewsAPP\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_bottom.xml",
         "source": "C:\\Users\\cdogemaru\\Desktop\\NewsAPP\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_bottom.xml"
     },
@@ -36,8 +40,16 @@
         "source": "C:\\Users\\cdogemaru\\Desktop\\NewsAPP\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_top.xml"
     },
     {
+        "merged": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_top.xml",
+        "source": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_top.xml"
+    },
+    {
         "merged": "F:\\THU\\JavaHw\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_top.xml",
         "source": "F:\\THU\\JavaHw\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_top.xml"
+    },
+    {
+        "merged": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_bottom.xml",
+        "source": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_bottom.xml"
     },
     {
         "merged": "D:\\files\\documentes\\JAVA\\as\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_bottom.xml",
@@ -46,5 +58,9 @@
     {
         "merged": "C:\\Users\\cdogemaru\\Desktop\\NewsAPP\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_top.xml",
         "source": "C:\\Users\\cdogemaru\\Desktop\\NewsAPP\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_top.xml"
+    },
+    {
+        "merged": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_bottom.xml",
+        "source": "C:\\Users\\cdogemaru\\Desktop\\javahw\\AndroidNewsAPP\\PullToRefresh\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_bottom.xml"
     }
 ]
