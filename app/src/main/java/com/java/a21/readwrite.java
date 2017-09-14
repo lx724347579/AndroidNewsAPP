@@ -62,6 +62,10 @@ public class readwrite {
     }
 
     public static void Saveimg(Bitmap mbitmap, String path) {
+
+        Log.d("save",mbitmap.toString());
+        Log.d("save",path);
+
         try {
             File file = new File(path);
             FileOutputStream out = new FileOutputStream(file);

@@ -119,7 +119,7 @@ public class PageFragment extends Fragment {
         newsview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                Log.d("ac",String.valueOf(i));
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
                 intent.putExtra("id",(String)newsapply.newslist.get(i-1).get("id"));
                 intent.putExtra("intro",(String)newsapply.newslist.get(i-1).get("info"));
@@ -160,11 +160,11 @@ public class PageFragment extends Fragment {
                     public void run() {
                         adapter.notifyDataSetChanged();
                         newsview.onRefreshComplete();
+                        SaveNewsList();
                     }
                 }, 1000);
 //                if(newsapply.finished == true)
 //                    pageno++;
-                SaveNewsList();
             }
         });
         return view;
@@ -278,16 +278,19 @@ public class PageFragment extends Fragment {
             readwrite.save((String)newsapply.newslist.get(i).get("info"), dir + "/info" + String.valueOf(i));
             readwrite.save((String)newsapply.newslist.get(i).get("id"), dir + "/id" + String.valueOf(i));
             RequestBuilder<Bitmap> requestBuilder = Glide.with(context).asBitmap();
-
+            Log.d("savenews",String.valueOf(i));
+            Log.d("savenews",(String)newsapply.newslist.get(i).get("title"));
             requestBuilder.load((String) newsapply.newslist.get(i).get("img"));
             requestBuilder.into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
                 @Override
                 public void onResourceReady(Bitmap resource, Transition glideAnimation) {
                     tmpmap = resource;
+
                 }
 
             });
-            readwrite.Saveimg(tmpmap,dir + String.valueOf(i) + ".jpg");
+            if(tmpmap != null)
+                readwrite.Saveimg(tmpmap,dir + String.valueOf(i) + ".jpg");
 
         }
     }

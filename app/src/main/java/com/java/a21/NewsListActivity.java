@@ -49,7 +49,7 @@ public class NewsListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         String path = "/data/data/com.java.a21/files";
         File file = new File(path);
-        //deleteDirWihtFile(file);
+        deleteDirWihtFile(file);
         Log.d("cao",String.valueOf(file.exists()));
 
         addTabButton.setOnClickListener(new View.OnClickListener() {

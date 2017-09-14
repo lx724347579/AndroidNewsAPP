@@ -29,7 +29,11 @@ public class NewsApply {
                 map.put("title", title);
                 map.put("info", info);
                 map.put("id", id);
-                map.put("img", "/data/data/com.java.a21/files/" + String.valueOf(cate) + "/img" + String.valueOf(i) + ".jpg");
+                if(new File("/data/data/com.java.a21/files/" + String.valueOf(cate) + "/img" + String.valueOf(i) + ".jpg").exists())
+                    map.put("img", "/data/data/com.java.a21/files/" + String.valueOf(cate) + "/img" + String.valueOf(i) + ".jpg");
+                else
+                    map.put("img","");
+
                 newslist.add(map);
             }
             finished = true;
@@ -65,7 +69,6 @@ public class NewsApply {
                         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                         String inputLine;
                         inputLine = in.readLine();
-                        Log.d("get",inputLine);
                         JSONObject jsonobj = new JSONObject(inputLine);
                         JSONArray jsonarray = jsonobj.getJSONArray("list");
 
@@ -76,8 +79,6 @@ public class NewsApply {
                             map.put("title", tmpnews.Title);
                             map.put("info", tmpnews.Intro);
                             map.put("id", tmpnews.ID);
-                            Log.d("get",tmpnews.Title);
-                            Log.d("get",String.valueOf(finished));
                             if (tmpnews.Pictures.contains(";"))
                                 map.put("img", tmpnews.Pictures.split(";")[0]);
                             else

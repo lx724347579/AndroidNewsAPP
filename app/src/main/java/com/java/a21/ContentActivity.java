@@ -78,11 +78,12 @@ public class ContentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         newsid = intent.getStringExtra("id");
         newsintro = intent.getStringExtra("intro");
+        Log.d("ac",newsid);
         GetNewsContent apply = new GetNewsContent();
         apply.getData("http://166.111.68.66:2042/news/action/query/detail?newsId=" + newsid);
 
         while (true) {
-            Log.v("ac","1");
+            Log.d("ac","1");
             if (apply.finished)
                 break;
         }
