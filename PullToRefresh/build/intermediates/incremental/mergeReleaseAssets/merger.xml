@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="F:\THU\JavaHw\PullToRefresh\src\main\assets"/><source path="F:\THU\JavaHw\PullToRefresh\build\generated\assets\shaders\release"/></dataSet><dataSet config="release"><source path="F:\THU\JavaHw\PullToRefresh\src\release\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="C:\Users\cdogemaru\Desktop\javahw\AndroidNewsAPP\PullToRefresh\src\main\assets"/><source path="C:\Users\cdogemaru\Desktop\javahw\AndroidNewsAPP\PullToRefresh\build\generated\assets\shaders\release"/></dataSet><dataSet config="release"><source path="C:\Users\cdogemaru\Desktop\javahw\AndroidNewsAPP\PullToRefresh\src\release\assets"/></dataSet></merger>
