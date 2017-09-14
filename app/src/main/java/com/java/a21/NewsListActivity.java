@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,6 +21,9 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+import android.widget.Switch;
+
+import java.io.File;
 import android.widget.Toast;
 
 
@@ -27,17 +31,54 @@ public class NewsListActivity extends AppCompatActivity {
     final int labelnum = 13;
     private SimpleFragmentPagerAdapter pagerAdapter;
     private ViewPager viewPager;
+
+    private Switch night_mode_switch;
+
+    private Switch no_pictures_switch;
+
     private ImageButton addTabButton;
     private TabLayout tabLayout;
     String keyword = new String();
 
-    @Override
+    public static void deleteDirWihtFile(File dir) {
+        if (dir == null || !dir.exists() || !dir.isDirectory())
+            return;
+        for (File file : dir.listFiles()) {
+            if (file.isFile())
+                file.delete(); // 删除所有文件
+            else if (file.isDirectory())
+                deleteDirWihtFile(file); // 递规的方式删除文件夹
+        }
+        dir.delete();// 删除目录本身
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         addTabButton = (ImageButton) findViewById(R.id.addTabButton);
+        night_mode_switch = (Switch) findViewById(R.id.night_mode_switch);
+        no_pictures_switch = (Switch) findViewById(R.id.no_pictures_switch);
         setSupportActionBar(toolbar);
+
+        String path = "/data/data/com.java.a21/files";
+        File file = new File(path);
+        //deleteDirWihtFile(file);
+        Log.d("cao",String.valueOf(file.exists()));
+
+        night_mode_switch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                Boolean checked = ((Switch)view).isChecked();
+                if (checked)
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                else
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                recreate();
+            }
+        });
+
         addTabButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

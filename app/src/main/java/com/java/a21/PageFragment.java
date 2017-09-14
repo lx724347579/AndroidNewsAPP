@@ -52,7 +52,7 @@ public class PageFragment extends Fragment {
 
     private String mtype;
     private int requestcode = 1500;
-    int pageno = 1;
+    //int pageno = 1;
     int typeid = 0;
     Context context;
     private MyAdapter adapter;
@@ -102,7 +102,7 @@ public class PageFragment extends Fragment {
         SpeechUtility.createUtility(this.getActivity(), SpeechConstant.APPID + "=59b678fe");
         //TODO LOAD THE DATA
 
-        newsapply.getData(pageno,typeid);
+        newsapply.getData(1,typeid);
         while(true) {
             Log.d("ac","1");
             if(newsapply.finished)
@@ -119,9 +119,10 @@ public class PageFragment extends Fragment {
         newsview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                Log.d("ac",String.valueOf(i));
                 Intent intent = new Intent(getActivity(), ContentActivity.class);
                 intent.putExtra("id",(String)newsapply.newslist.get(i-1).get("id"));
+                intent.putExtra("intro",(String)newsapply.newslist.get(i-1).get("info"));
 
 
                 Log.d("ac",(String)newsapply.newslist.get(i-1).get("id"));
@@ -150,7 +151,7 @@ public class PageFragment extends Fragment {
 
                 //TODO: REFRESH THE DATA
 
-                newsapply.getData(++pageno,typeid);
+                newsapply.getData(newsapply.newslist.size()/20+1,typeid);
 
                 for(int i = 0; i < 20; i++)
                     gray.add(false);
@@ -159,9 +160,11 @@ public class PageFragment extends Fragment {
                     public void run() {
                         adapter.notifyDataSetChanged();
                         newsview.onRefreshComplete();
+                        SaveNewsList();
                     }
                 }, 1000);
-                SaveNewsList();
+//                if(newsapply.finished == true)
+//                    pageno++;
             }
         });
         return view;
@@ -171,7 +174,7 @@ public class PageFragment extends Fragment {
     {
         db = new database();
         Cursor cursor = null;
-        for(int i = 0; i < pageno * 20; i++) {
+        for(int i = 0; i < newsapply.newslist.size(); i++) {
             cursor = db.querybyid((String)newsapply.newslist.get(i).get("id"));
             Log.d("c",String.valueOf(i) + " " + String.valueOf(cursor.getCount()));
             if (cursor.getCount() == 0)
@@ -258,78 +261,49 @@ public class PageFragment extends Fragment {
     }
 
 
-
+    Bitmap tmpmap = null;
+    File dir = null;
+    int index = 0;
     private void SaveNewsList()
     {
-        String path = "/data/data/com.java.a21/caches/" + typeid;
-        File dir = new File(path);
+        if(newsapply.newslist.size() == 0)
+            return;
+        String path = "/data/data/com.java.a21/files/" + typeid;
+        dir = new File(path);
         dir.mkdirs();
-        final Bitmap[] bitmap = new Bitmap[1];
+        if(new File(dir + "/title" + String.valueOf(newsapply.newslist.size()-1)).exists())
+            return;
+        tmpmap = null;
         for(int i = newsapply.newslist.size() - 20; i < newsapply.newslist.size(); i++) {
-            save((String)newsapply.newslist.get(i).get("title"), dir + "/title" + String.valueOf(i));
-            save((String)newsapply.newslist.get(i).get("info"), dir + "/info" + String.valueOf(i));
+            index = i;
+
+            readwrite.save((String)newsapply.newslist.get(i).get("title"), dir + "/title" + String.valueOf(i));
+            readwrite.save((String)newsapply.newslist.get(i).get("info"), dir + "/info" + String.valueOf(i));
+            readwrite.save((String)newsapply.newslist.get(i).get("id"), dir + "/id" + String.valueOf(i));
             RequestBuilder<Bitmap> requestBuilder = Glide.with(context).asBitmap();
+            Log.d("savenews",String.valueOf(i));
+            Log.d("savenews",(String)newsapply.newslist.get(i).get("img"));
+
 
             requestBuilder.load((String) newsapply.newslist.get(i).get("img"));
             requestBuilder.into(new SimpleTarget<Bitmap>(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL) {
+                int in = index;
                 @Override
                 public void onResourceReady(Bitmap resource, Transition glideAnimation) {
-                    bitmap[0] = resource;
+                    //tmpmap = resource;
+                    Log.d("savenews",resource.toString());
+                    Log.d("savenews",String.valueOf(in));
+
+                    readwrite.Saveimg(resource, dir + "/img" + String.valueOf(in) + ".jpg");
+
                 }
 
             });
-            Saveimg(bitmap[0],dir + String.valueOf(i) + ".jpg");
+//            if(tmpmap != null) {
+//                Log.d("savenews2",tmpmap.toString());
+//                readwrite.Saveimg(tmpmap, dir + String.valueOf(i) + ".jpg");
+//            }
 
         }
-    }
-
-    private void save(String text,String path) {
-        try {
-            File file = new File(path);
-            FileOutputStream outputStream = new FileOutputStream(file);
-            outputStream.write(text.getBytes());
-            outputStream.flush();
-            outputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private String read(String path) {
-        String content = null;
-        try {
-            File file = new File(path);
-            FileInputStream inputStream = new FileInputStream(file);
-            byte[] bytes = new byte[1024];
-            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-            while (inputStream.read(bytes) != -1) {
-                arrayOutputStream.write(bytes, 0, bytes.length);
-            }
-            inputStream.close();
-            arrayOutputStream.close();
-            content = new String(arrayOutputStream.toByteArray());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return content;
-
-    }
-
-    private void Saveimg(Bitmap mbitmap,String path) {
-        try {
-            File file = new File(path);
-            FileOutputStream out = new FileOutputStream(file);
-            mbitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 }
