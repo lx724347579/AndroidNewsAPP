@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,12 +69,19 @@ public class ContentActivity extends AppCompatActivity {
     Bitmap tmpmap = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context = this.getBaseContext();
 
+<<<<<<< HEAD
+=======
+        requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.timg);
+        requestOptions.error(R.drawable.timg);
+>>>>>>> dd51067a74aa63ab99aebe77cba3a2cff05c5f67
 
         Intent intent = getIntent();
         newsid = intent.getStringExtra("id");

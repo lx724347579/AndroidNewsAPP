@@ -10,11 +10,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 import java.io.File;
 
@@ -24,6 +26,10 @@ public class NewsListActivity extends AppCompatActivity {
     private SimpleFragmentPagerAdapter pagerAdapter;
 
     private ViewPager viewPager;
+
+    private Switch night_mode_switch;
+
+    private Switch no_pictures_switch;
 
     private ImageButton addTabButton;
 
@@ -46,11 +52,29 @@ public class NewsListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         addTabButton = (ImageButton) findViewById(R.id.addTabButton);
+        night_mode_switch = (Switch) findViewById(R.id.night_mode_switch);
+        no_pictures_switch = (Switch) findViewById(R.id.no_pictures_switch);
         setSupportActionBar(toolbar);
+<<<<<<< HEAD
         String path = "/data/data/com.java.a21/files";
         File file = new File(path);
         deleteDirWihtFile(file);
         Log.d("cao",String.valueOf(file.exists()));
+=======
+
+        night_mode_switch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                Boolean checked = ((Switch)view).isChecked();
+                if (checked)
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                else
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                recreate();
+            }
+        });
+>>>>>>> dd51067a74aa63ab99aebe77cba3a2cff05c5f67
 
         addTabButton.setOnClickListener(new View.OnClickListener() {
 
